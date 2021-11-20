@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 interface RecipeRemoteDataSource {
     suspend fun searchRecipes(query: String, pageNumber: Int): RecipeSearchResponseDto
@@ -21,7 +22,7 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
         var responseDto: RecipeSearchResponseDto? = null
 
         try {
-            responseDto = recipeRetrofitService.searchRecipe(page = pageNumber, query = query)
+            responseDto = recipeRetrofitService.searchRecipe(page = pageNumber, query = query).execute().body()
         } catch (throwable: Throwable) {
             if (throwable is IOException) {
                 throw UnknownException()
@@ -35,14 +36,14 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
             }
         }
 
-        return responseDto
+        return responseDto!!
     }
 
     override suspend fun getRecipe(recipeId: Int): RecipeDto {
         var response: RecipeDto? = null
 
         try {
-            response = recipeRetrofitService.getRecipe(id = recipeId)
+            response = recipeRetrofitService.getRecipe(id = recipeId).execute().body()
         } catch (throwable: Throwable) {
             if (throwable is IOException) {
                 throw UnknownException()
@@ -56,6 +57,6 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
             }
         }
 
-        return response
+        return response!!
     }
 }
