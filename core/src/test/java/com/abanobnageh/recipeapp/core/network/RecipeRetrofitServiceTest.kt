@@ -6,10 +6,9 @@ import com.google.common.truth.Truth.assertThat
 import com.google.gson.Gson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.MockitoAnnotations
@@ -25,7 +24,15 @@ class RecipeRetrofitServiceTest {
         MockitoAnnotations.initMocks(this)
         mockWebServer = MockWebServer()
         mockWebServer.start()
-        service = RetrofitServiceBuilder.buildService(RecipeRetrofitService::class.java)
+        service = RetrofitServiceBuilder.buildService(
+            RecipeRetrofitService::class.java,
+            mockWebServer.url("/").toString()
+        )
+    }
+
+    @After
+    fun clear() {
+        mockWebServer.shutdown()
     }
 
     @Test
