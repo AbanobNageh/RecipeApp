@@ -22,7 +22,7 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
         var responseDto: RecipeSearchResponseDto? = null
 
         try {
-            responseDto = recipeRetrofitService.searchRecipe(page = pageNumber, query = query).execute().body()
+            responseDto = withContext(Dispatchers.IO) { recipeRetrofitService.searchRecipe(page = pageNumber, query = query).execute().body() }
         } catch (throwable: Throwable) {
             if (throwable is IOException) {
                 throw UnknownException()
@@ -43,7 +43,7 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
         var response: RecipeDto? = null
 
         try {
-            response = recipeRetrofitService.getRecipe(id = recipeId).execute().body()
+            response = withContext(Dispatchers.IO) { recipeRetrofitService.getRecipe(id = recipeId).execute().body() }
         } catch (throwable: Throwable) {
             if (throwable is IOException) {
                 throw UnknownException()
