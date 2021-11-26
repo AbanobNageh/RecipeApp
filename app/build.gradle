@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdkVersion _compileSdkVersion
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.abanobnageh.recipeapp"
-        minSdk 24
-        targetSdk 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion _minSdkVersion
+        targetSdkVersion _targetSdkVersion
+        versionCode _versionCode
+        versionName _versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

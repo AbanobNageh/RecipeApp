@@ -25,3 +25,9 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext._minSdkVersion = 21
+ext._compileSdkVersion = 31
+ext._targetSdkVersion = 30 // don't update to 30 before removing `requestLegacyExternalStorage` and making sure to use SAF
+ext._versionCode = 1
+ext._versionName = "1.0.0"
