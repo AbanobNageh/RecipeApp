@@ -10,9 +10,7 @@ import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.usecases.GetRecipe
 import com.abanobnageh.recipeapp.feature_recipes.usecases.GetRecipeParams
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 enum class RecipeScreenState {
@@ -29,12 +27,12 @@ class RecipeScreenViewModel @Inject constructor(val getRecipe: GetRecipe): ViewM
     var recipe: Recipe? = null
     var error: Error? = null
 
-    fun getRecipe() {
+    fun getRecipe(): Deferred<Unit> {
         if (screenState.value == RecipeScreenState.LOADING) {
-            return
+            return CompletableDeferred()
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        val asyncJob = viewModelScope.async(Dispatchers.IO) {
             screenState.value = RecipeScreenState.LOADING
 
             val recipeResponse: Response<Error, Recipe> = getRecipe.call(
@@ -52,5 +50,7 @@ class RecipeScreenViewModel @Inject constructor(val getRecipe: GetRecipe): ViewM
                 screenState.value = RecipeScreenState.NORMAL
             }
         }
+
+        return asyncJob
     }
 }

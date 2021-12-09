@@ -13,9 +13,7 @@ import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchResponse
 import com.abanobnageh.recipeapp.feature_recipes.usecases.SearchRecipes
 import com.abanobnageh.recipeapp.feature_recipes.usecases.SearchRecipesParams
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -43,15 +41,15 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
     var paginationPageNumber = 1
     var isPaginationDone = false
 
-    fun getRecipesList() {
+    fun getRecipesList(): Deferred<Unit> {
         if (isPaginationDone ||
             screenState.value == RecipeListScreenState.LOADING ||
             screenState.value == RecipeListScreenState.NORMAL_PAGINATION_LOADING
         ) {
-            return
+            return CompletableDeferred()
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        val asyncJob = viewModelScope.async(Dispatchers.IO) {
             if (recipes.isEmpty()) {
                 screenState.value = RecipeListScreenState.LOADING
             } else {
@@ -77,6 +75,7 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
             }
         }
         this.scrollToCurrentItem()
+        return asyncJob
     }
 
     fun incrementPageNumber() {

@@ -39,8 +39,10 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.4.0'
     api 'com.google.android.material:material:1.4.0'
     api "androidx.compose.ui:ui:$compose_version"
-    api "androidx.compose.material:material:$compose_version"
     api "androidx.compose.ui:ui-tooling:$compose_version"
+    api "androidx.compose.foundation:foundation:$compose_version"
+    api "androidx.compose.material:material:$compose_version"
+    api "androidx.compose.compiler:compiler:$compose_version"
     api 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     api 'androidx.activity:activity-compose:1.4.0'
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
