@@ -9,6 +9,10 @@ android {
     compileSdkVersion _compileSdkVersion
     buildToolsVersion "30.0.3"
 
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+
     defaultConfig {
         applicationId "com.abanobnageh.recipeapp"
         minSdkVersion _minSdkVersion
@@ -52,5 +56,9 @@ dependencies {
     implementation project(path: ':data')
     implementation project(path: ':dependencies')
     implementation project(path: ':feature-recipes')
+
+    androidTestImplementation "junit:junit:4.*"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
 

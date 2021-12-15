@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,7 +50,8 @@ fun AppBar(
                     onValueChange = onTextChanged,
                     modifier = Modifier
                         .fillMaxWidth(0.9F)
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .testTag("app_bar_text_field_tag"),
                     label = @Composable {
                         Text(text = "Search")
                     },
@@ -84,7 +86,8 @@ fun AppBar(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp, bottom = 8.dp),
+                    .padding(start = 8.dp, bottom = 8.dp)
+                    .testTag("app_bar_food_categories_row"),
                 state = foodCategoryListState
             ) {
                 itemsIndexed(
