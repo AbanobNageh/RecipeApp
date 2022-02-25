@@ -15,10 +15,8 @@ const val PREFERENCE_DARK_THEME_KEY = "dark_theme"
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor() : ViewModel() {
-    val isDarkTheme: MutableState<Boolean> = mutableStateOf(false)
-    
+
     fun setIsDarkTheme(activity: Activity?, isDarkTheme: Boolean) {
-        this.isDarkTheme.value = isDarkTheme
         val sharedPref = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE) ?: return
 
         with (sharedPref.edit()) {
@@ -28,8 +26,7 @@ class MainActivityViewModel @Inject constructor() : ViewModel() {
     }
 
     fun loadDarkTheme(activity: Activity?): Boolean {
-        val sharedPref = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE) ?: return isDarkTheme.value
-        isDarkTheme.value = sharedPref.getBoolean(PREFERENCE_DARK_THEME_KEY, isDarkTheme.value)
-        return isDarkTheme.value
+        val sharedPref = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
+        return sharedPref?.getBoolean(PREFERENCE_DARK_THEME_KEY, false) ?: false
     }
 }
