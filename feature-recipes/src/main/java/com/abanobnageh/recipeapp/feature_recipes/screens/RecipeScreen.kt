@@ -7,16 +7,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.hilt.getViewModel
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
+import com.abanobnageh.recipeapp.core.utils.getActivity
+import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.feature_recipes.R
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenViewModel
@@ -31,6 +35,13 @@ class RecipeScreen(
     @Composable
     override fun Content() {
         val viewModel = getViewModel<RecipeScreenViewModel>()
+        val activityViewModel = getViewModel<MainActivityViewModel>()
+
+        val localContext = LocalContext.current
+        val activity = localContext.getActivity()
+
+        val isDarkTheme by remember { mutableStateOf(activityViewModel.loadDarkTheme(activity)) }
+
         LifecycleEffect(
             onStarted = {
                 viewModel.recipeId = recipeId
@@ -38,7 +49,11 @@ class RecipeScreen(
             }
         )
 
-        RecipeScreenContent(viewModel)
+        RecipeAppTheme(darkTheme = isDarkTheme) {
+            RecipeScreenContent(
+                viewModel
+            )
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 package com.abanobnageh.recipeapp.data.models.domain
 
 import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import java.io.Serializable
 
 data class Recipe(
     val cookingInstructions: String?,
@@ -16,7 +17,7 @@ data class Recipe(
     val rating: Int?,
     val sourceUrl: String?,
     val title: String?,
-) {
+): Serializable {
     fun mapToNetworkModel(): RecipeDto {
         return RecipeDto(
             cookingInstructions = this.cookingInstructions,

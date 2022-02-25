@@ -11,14 +11,18 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
+import com.abanobnageh.recipeapp.core.utils.getActivity
+import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenViewModel
 import com.abanobnageh.recipeapp.feature_recipes.views.AppBar
@@ -26,13 +30,17 @@ import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.RecipeCard
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeList
 
-class RecipeListScreen(
-    val onToggleTheme: () -> Unit,
-): AndroidScreen() {
+class RecipeListScreen(): AndroidScreen() {
 
     @Composable
     override fun Content() {
         val viewModel = getViewModel<RecipeListScreenViewModel>()
+        val activityViewModel = getViewModel<MainActivityViewModel>()
+
+        val localContext = LocalContext.current
+        val activity = localContext.getActivity()
+
+        var isDarkTheme by remember { mutableStateOf(activityViewModel.loadDarkTheme(activity)) }
 
         LifecycleEffect(
             onStarted = {
@@ -40,10 +48,15 @@ class RecipeListScreen(
             }
         )
 
-        RecipeListScreenContent(
-            viewModel = viewModel,
-            onToggleTheme = onToggleTheme,
-        )
+        RecipeAppTheme(darkTheme = isDarkTheme) {
+            RecipeListScreenContent(
+                viewModel = viewModel,
+                onToggleTheme = {
+                    isDarkTheme = !isDarkTheme
+                    activityViewModel.setIsDarkTheme(activity, isDarkTheme)
+                },
+            )
+        }
     }
 }
 

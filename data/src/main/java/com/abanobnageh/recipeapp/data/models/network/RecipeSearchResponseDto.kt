@@ -3,6 +3,7 @@ package com.abanobnageh.recipeapp.data.models.network
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchResponse
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RecipeSearchResponseDto(
     @SerializedName("count")
@@ -13,7 +14,7 @@ data class RecipeSearchResponseDto(
     val previous: String?,
     @SerializedName("results")
     val results: ArrayList<RecipeDto>?
-) {
+): Serializable {
     fun mapToNetworkModel(): RecipeSearchResponse {
         return RecipeSearchResponse(
             count = this.count,

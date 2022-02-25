@@ -1,6 +1,8 @@
 package com.abanobnageh.recipeapp.data.models.domain
 
-enum class FoodCategory(val foodCategory: String) {
+import java.io.Serializable
+
+enum class FoodCategory(val foodCategory: String): Serializable {
     CHICKEN("Chicken"),
     BEEF("Beef"),
     SOUP("Soup"),

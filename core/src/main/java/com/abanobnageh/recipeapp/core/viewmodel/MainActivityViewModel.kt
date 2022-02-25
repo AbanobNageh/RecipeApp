@@ -1,4 +1,4 @@
-package com.abanobnageh.recipeapp
+package com.abanobnageh.recipeapp.core.viewmodel
 
 import android.app.Activity
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.abanobnageh.recipeapp.ui.theme
+package com.abanobnageh.recipeapp.core.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors

@@ -2,6 +2,7 @@ package com.abanobnageh.recipeapp.data.models.network
 
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RecipeDto(
     @SerializedName("cooking_instructions")
@@ -30,7 +31,7 @@ data class RecipeDto(
     val sourceUrl: String?,
     @SerializedName("title")
     val title: String?
-) {
+): Serializable {
     fun mapToDomainModel(): Recipe {
         return Recipe(
             cookingInstructions = this.cookingInstructions,
