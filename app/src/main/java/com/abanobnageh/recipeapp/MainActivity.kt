@@ -6,20 +6,19 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.feature_recipes.screens.RecipeListScreen
-import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.feature_recipes.screens.RecipeScreen
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.Serializable
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    val activityViewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         val data: Uri? = intent?.data
 
         setContent {
-            Navigator(
-                getScreenListFromDeepLink(data)
+            App(
+                screenList = getScreenListFromDeepLink(data)
             )
         }
     }
@@ -40,11 +39,20 @@ class MainActivity : AppCompatActivity() {
         val data: Uri? = intent?.data
 
         setContent {
-            Navigator(
-                getScreenListFromDeepLink(data)
+            App(
+                screenList = getScreenListFromDeepLink(data)
             )
         }
     }
+}
+
+@Composable
+fun App(
+    screenList: List<Screen>,
+) {
+    Navigator(
+        screenList
+    )
 }
 
 fun getScreenListFromDeepLink(deepLinkData: Uri?): List<Screen> {
