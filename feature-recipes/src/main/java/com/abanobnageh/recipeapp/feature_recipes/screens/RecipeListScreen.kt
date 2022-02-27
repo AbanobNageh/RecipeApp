@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.screens
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.abanobnageh.recipeapp.core.constants.ACTION_THEME_TOGGLED
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.utils.getActivity
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
@@ -35,12 +37,9 @@ class RecipeListScreen(): AndroidScreen() {
     @Composable
     override fun Content() {
         val viewModel = getViewModel<RecipeListScreenViewModel>()
-        val activityViewModel = getViewModel<MainActivityViewModel>()
 
         val localContext = LocalContext.current
         val activity = localContext.getActivity()
-
-        var isDarkTheme by remember { mutableStateOf(activityViewModel.loadDarkTheme(activity)) }
 
         LifecycleEffect(
             onStarted = {
@@ -48,15 +47,12 @@ class RecipeListScreen(): AndroidScreen() {
             }
         )
 
-        RecipeAppTheme(darkTheme = isDarkTheme) {
-            RecipeListScreenContent(
-                viewModel = viewModel,
-                onToggleTheme = {
-                    isDarkTheme = !isDarkTheme
-                    activityViewModel.setIsDarkTheme(activity, isDarkTheme)
-                },
-            )
-        }
+        RecipeListScreenContent(
+            viewModel = viewModel,
+            onToggleTheme = {
+                activity?.sendBroadcast(Intent(ACTION_THEME_TOGGLED))
+            }
+        )
     }
 }
 

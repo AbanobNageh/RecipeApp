@@ -35,12 +35,8 @@ class RecipeScreen(
     @Composable
     override fun Content() {
         val viewModel = getViewModel<RecipeScreenViewModel>()
-        val activityViewModel = getViewModel<MainActivityViewModel>()
 
         val localContext = LocalContext.current
-        val activity = localContext.getActivity()
-
-        val isDarkTheme by remember { mutableStateOf(activityViewModel.loadDarkTheme(activity)) }
 
         LifecycleEffect(
             onStarted = {
@@ -49,11 +45,9 @@ class RecipeScreen(
             }
         )
 
-        RecipeAppTheme(darkTheme = isDarkTheme) {
-            RecipeScreenContent(
-                viewModel
-            )
-        }
+        RecipeScreenContent(
+            viewModel
+        )
     }
 }
 
