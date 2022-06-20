@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        compose_version = '1.2.0-beta02'
+        compose_version = '1.2.0-rc01'
         lifecycle_version = "2.4.1"
         arch_version = "2.1.0"
         kotlin_version = "1.6.21"
@@ -28,7 +28,7 @@ task clean(type: Delete) {
 }
 
 ext._minSdkVersion = 21
-ext._compileSdkVersion = 31
+ext._compileSdkVersion = 32
 ext._targetSdkVersion = 30 // don't update to 30 before removing `requestLegacyExternalStorage` and making sure to use SAF
 ext._versionCode = 1
 ext._versionName = "1.0.0"
