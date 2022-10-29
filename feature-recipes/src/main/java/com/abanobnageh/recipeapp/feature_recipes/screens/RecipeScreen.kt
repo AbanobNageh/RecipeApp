@@ -26,7 +26,11 @@ import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenViewModel
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeView
+import com.bumptech.glide.request.RequestOptions
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.components.imageComponent
 import com.skydoves.landscapist.glide.GlideImage
+import com.skydoves.landscapist.placeholder.placeholder.PlaceholderPlugin
 
 class RecipeScreen(
     val recipeId: Int,
@@ -58,16 +62,19 @@ fun RecipeScreenContent(
     val screenState = viewModel.screenState.value
     val recipe = viewModel.recipe
 
-    Scaffold() {
+    Scaffold() { padding ->
         when (screenState) {
             RecipeScreenState.LOADING -> {
-                ShimmerRecipeView()
+                ShimmerRecipeView(
+                    listPadding = padding,
+                )
             }
             RecipeScreenState.ERROR -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colors.background),
+                        .background(MaterialTheme.colors.background)
+                        .padding(padding),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -83,18 +90,23 @@ fun RecipeScreenContent(
                         .fillMaxWidth()
                         .background(MaterialTheme.colors.background)
                         .verticalScroll(state = ScrollState(0))
+                        .padding(padding)
                 ) {
                     if (recipe != null) {
                         recipe.featuredImage?.let { featuredImage ->
                             GlideImage(
-                                imageModel = featuredImage,
-                                contentDescription = null,
+                                imageModel = { featuredImage },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(RECIPE_IMAGE_HEIGHT),
-                                contentScale = ContentScale.Crop,
-                                placeHolder = ImageBitmap.imageResource(R.drawable.empty_plate),
-                                error = ImageBitmap.imageResource(R.drawable.empty_plate)
+                                requestOptions = {
+                                    RequestOptions()
+                                        .error(R.drawable.empty_plate)
+                                        .placeholder(R.drawable.empty_plate)
+                                },
+                                imageOptions = ImageOptions(
+                                    contentScale = ContentScale.Crop,
+                                ),
                             )
                         }
                         Column(

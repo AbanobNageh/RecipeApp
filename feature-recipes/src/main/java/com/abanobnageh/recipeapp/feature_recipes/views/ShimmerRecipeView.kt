@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ShimmerRecipeView(
+    listPadding: PaddingValues,
     colors: List<Color> = listOf(
         Color.LightGray.copy(0.9f),
         Color.LightGray.copy(0.2f),
@@ -64,7 +65,9 @@ fun ShimmerRecipeView(
             end = Offset(xCardShimmer.value, yCardShimmer.value)
         )
 
-        Column(modifier = Modifier.padding(padding)) {
+        Column(
+            modifier = Modifier.padding(listPadding)
+        ) {
             Surface(shape = MaterialTheme.shapes.small) {
                 Spacer(
                     modifier = Modifier

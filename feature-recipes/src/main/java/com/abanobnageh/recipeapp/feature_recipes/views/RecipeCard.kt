@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
+import com.bumptech.glide.request.RequestOptions
+import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -34,14 +36,18 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
         ) {
             recipe.featuredImage?.let { featuredImage ->
                 GlideImage(
-                    imageModel = featuredImage,
-                    contentDescription = null,
+                    imageModel = { featuredImage },
+                    requestOptions = {
+                        RequestOptions()
+                            .error(R.drawable.empty_plate)
+                            .placeholder(R.drawable.empty_plate)
+                    },
+                    imageOptions = ImageOptions(
+                        contentScale = ContentScale.Crop,
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(RECIPE_IMAGE_HEIGHT),
-                    contentScale = ContentScale.Crop,
-                    placeHolder = ImageBitmap.imageResource(R.drawable.empty_plate),
-                    error = ImageBitmap.imageResource(R.drawable.empty_plate)
                 )
             }
             recipe.title?.let { title ->

@@ -38,13 +38,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-        useIR = true
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion compose_compiler_version
     }
 }
 
@@ -58,7 +57,7 @@ dependencies {
     implementation project(path: ':feature-recipes')
 
     androidTestImplementation "junit:junit:4.*"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
 }
 
