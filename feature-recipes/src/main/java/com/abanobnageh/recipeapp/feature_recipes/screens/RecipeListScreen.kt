@@ -25,6 +25,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.abanobnageh.recipeapp.core.constants.ACTION_THEME_TOGGLED
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.utils.getActivity
+import com.abanobnageh.recipeapp.core.utils.isScrolledToEnd
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenViewModel
@@ -32,6 +33,7 @@ import com.abanobnageh.recipeapp.feature_recipes.views.AppBar
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.RecipeCard
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeList
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RecipeListScreen(): AndroidScreen() {
@@ -73,6 +75,15 @@ fun RecipeListScreenContent(
     val screenState = viewModel.screenState.value
     val recipes = viewModel.recipes
     val selectedFoodCategory = viewModel.selectedFoodCategory.value
+
+    LaunchedEffect( viewModel.recipeListState ) {
+        snapshotFlow { viewModel.recipeListState.isScrolledToEnd() }.collect { isScrolledToEnd ->
+            if (isScrolledToEnd) {
+                viewModel.incrementPageNumber()
+                viewModel.getRecipesList()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -136,13 +147,6 @@ fun RecipeListScreenContent(
                         itemsIndexed(
                             items = recipes
                         ) { index, recipe ->
-                            if (viewModel.recipes.size - 1 == index) {
-                                coroutineScope.launch {
-                                    viewModel.incrementPageNumber()
-                                    viewModel.getRecipesList()
-                                }
-                            }
-
                             RecipeCard(
                                 recipe = recipe,
                                 onClick = {
