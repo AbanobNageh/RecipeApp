@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.views
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -14,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
 import com.bumptech.glide.request.RequestOptions
@@ -48,6 +50,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(RECIPE_IMAGE_HEIGHT),
+                    previewPlaceholder = R.drawable.empty_plate,
                 )
             }
             recipe.title?.let { title ->
@@ -84,35 +87,43 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
     }
 }
 
-@Preview
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
 @Composable
 fun PreviewRecipeCard() {
-    RecipeCard(
-        Recipe(
-            cookingInstructions = null,
-            dateAdded = "November 11 2020",
-            dateUpdated = "November 11 2020",
-            description = "N/A",
-            featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
-            ingredients = arrayListOf(
-                "12",
-                "cupcakes",
-                "devil's food",
-                "Chocolate Glaze",
-                "Edible gold glitter",
-                "4 tablespoons butter",
-                "1 recipe for Chocolate Glaze (below)",
-                "Approximately 1/2 cup chocolate chips",
-                "1 recipe for Marshmallow Filling (below)",
-                "6 ounces (1 cup) semi-sweet chocolate chips"
-            ),
-            longDateAdded = 1606348709,
-            longDateUpdated = 1606348709,
-            pk = 1,
-            publisher = "blake",
-            rating = 22,
-            sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
-            title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
+    RecipeAppTheme {
+        RecipeCard(
+            Recipe(
+                cookingInstructions = null,
+                dateAdded = "November 11 2020",
+                dateUpdated = "November 11 2020",
+                description = "N/A",
+                featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
+                ingredients = arrayListOf(
+                    "12",
+                    "cupcakes",
+                    "devil's food",
+                    "Chocolate Glaze",
+                    "Edible gold glitter",
+                    "4 tablespoons butter",
+                    "1 recipe for Chocolate Glaze (below)",
+                    "Approximately 1/2 cup chocolate chips",
+                    "1 recipe for Marshmallow Filling (below)",
+                    "6 ounces (1 cup) semi-sweet chocolate chips"
+                ),
+                longDateAdded = 1606348709,
+                longDateUpdated = 1606348709,
+                pk = 1,
+                publisher = "blake",
+                rating = 22,
+                sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
+                title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
+            )
         )
-    )
+    }
 }

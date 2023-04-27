@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.views
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
@@ -19,7 +20,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.data.models.domain.FoodCategory
 
 @Composable
@@ -105,5 +108,74 @@ fun AppBar(
                 }
             }
         }
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun AppBarPreview() {
+    RecipeAppTheme {
+        AppBar(
+            searchText = "",
+            onTextChanged = {},
+            onSearch = {},
+            foodCategoryListState = LazyListState(),
+            selectedFoodCategory = null,
+            setSelectedFoodCategory = {},
+            setSelectedFoodCategoryIndex = {},
+            onToggleTheme = {},
+        )
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun AppBarWithTextPreview() {
+    RecipeAppTheme {
+        AppBar(
+            searchText = "cake",
+            onTextChanged = {},
+            onSearch = {},
+            foodCategoryListState = LazyListState(),
+            selectedFoodCategory = null,
+            setSelectedFoodCategory = {},
+            setSelectedFoodCategoryIndex = {},
+            onToggleTheme = {},
+        )
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun AppBarWithSelectedCategoryPreview() {
+    RecipeAppTheme {
+        AppBar(
+            searchText = "cake",
+            onTextChanged = {},
+            onSearch = {},
+            foodCategoryListState = LazyListState(),
+            selectedFoodCategory = FoodCategory.CHICKEN,
+            setSelectedFoodCategory = {},
+            setSelectedFoodCategoryIndex = {},
+            onToggleTheme = {},
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.views
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,8 +12,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 
 @Composable
 fun ShimmerRecipeView(
@@ -114,5 +117,22 @@ fun ShimmerRecipeView(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+    showBackground = true
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun ShimmerRecipeViewPreview() {
+    RecipeAppTheme {
+        ShimmerRecipeView(
+            listPadding = PaddingValues()
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.views
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 
 @Composable
 fun FoodCategoryChip(
@@ -48,5 +51,43 @@ fun FoodCategoryChip(
                     .padding(8.dp),
             )
         }
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun FoodCategoryChipPreview() {
+    RecipeAppTheme {
+        FoodCategoryChip(
+            foodCategory = "title",
+            isSelected = false,
+            onSelected = {},
+            onSearch = {},
+        )
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun FoodCategoryChipSelectedPreview() {
+    RecipeAppTheme {
+        FoodCategoryChip(
+            foodCategory = "title",
+            isSelected = true,
+            onSelected = {},
+            onSearch = {},
+        )
     }
 }
