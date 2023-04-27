@@ -1,5 +1,6 @@
 package com.abanobnageh.recipeapp.feature_recipes.screens
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import com.abanobnageh.recipeapp.feature_recipes.views.AppBar
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.RecipeCard
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeList
+import kotlinx.coroutines.launch
 
 class RecipeListScreen(): AndroidScreen() {
 
@@ -40,10 +42,13 @@ class RecipeListScreen(): AndroidScreen() {
 
         val localContext = LocalContext.current
         val activity = localContext.getActivity()
+        val coroutineScope = rememberCoroutineScope()
 
         LifecycleEffect(
             onStarted = {
-                viewModel.getRecipesList()
+                coroutineScope.launch {
+                    viewModel.getRecipesList()
+                }
             }
         )
 
@@ -56,12 +61,14 @@ class RecipeListScreen(): AndroidScreen() {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun RecipeListScreenContent(
     viewModel: RecipeListScreenViewModel,
     onToggleTheme: () -> Unit,
 ) {
     val navigator = LocalNavigator.currentOrThrow
+    val coroutineScope = rememberCoroutineScope()
 
     val screenState = viewModel.screenState.value
     val recipes = viewModel.recipes
@@ -73,8 +80,10 @@ fun RecipeListScreenContent(
                 searchText = viewModel.searchText.value,
                 onTextChanged = { text -> viewModel.setSearchText(text) },
                 onSearch = {
-                    viewModel.resetSearch()
-                    viewModel.getRecipesList()
+                    coroutineScope.launch {
+                        viewModel.resetSearch()
+                        viewModel.getRecipesList()
+                    }
                 },
                 foodCategoryListState = viewModel.foodCategoryListState,
                 selectedFoodCategory = selectedFoodCategory,
@@ -128,8 +137,10 @@ fun RecipeListScreenContent(
                             items = recipes
                         ) { index, recipe ->
                             if (viewModel.recipes.size - 1 == index) {
-                                viewModel.incrementPageNumber()
-                                viewModel.getRecipesList()
+                                coroutineScope.launch {
+                                    viewModel.incrementPageNumber()
+                                    viewModel.getRecipesList()
+                                }
                             }
 
                             RecipeCard(

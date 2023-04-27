@@ -41,12 +41,12 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
     var paginationPageNumber = 1
     var isPaginationDone = false
 
-    fun getRecipesList(): Deferred<Unit> {
+    suspend fun getRecipesList(): Unit {
         if (isPaginationDone ||
             screenState.value == RecipeListScreenState.LOADING ||
             screenState.value == RecipeListScreenState.NORMAL_PAGINATION_LOADING
         ) {
-            return CompletableDeferred()
+            return
         }
 
         val asyncJob = viewModelScope.async(Dispatchers.IO) {
@@ -75,7 +75,7 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
             }
         }
         this.scrollToCurrentItem()
-        return asyncJob
+        return asyncJob.await()
     }
 
     fun incrementPageNumber() {

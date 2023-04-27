@@ -80,8 +80,8 @@ class RecipeScreenViewModelTest {
             actualRecipeScreenViewModel.recipeId = 1
             mockRecipeScreenViewModel.recipeId = 1
 
-            actualRecipeScreenViewModel.getRecipe().await()
-            mockRecipeScreenViewModel.getRecipe().await()
+            actualRecipeScreenViewModel.getRecipe()
+            mockRecipeScreenViewModel.getRecipe()
 
             Truth.assertThat(actualRecipeScreenViewModel.recipe).isNotNull()
             Truth.assertThat(mockRecipeScreenViewModel.recipe).isNotNull()

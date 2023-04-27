@@ -31,6 +31,7 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.components.imageComponent
 import com.skydoves.landscapist.glide.GlideImage
 import com.skydoves.landscapist.placeholder.placeholder.PlaceholderPlugin
+import kotlinx.coroutines.launch
 
 class RecipeScreen(
     val recipeId: Int,
@@ -41,11 +42,14 @@ class RecipeScreen(
         val viewModel = getViewModel<RecipeScreenViewModel>()
 
         val localContext = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
 
         LifecycleEffect(
             onStarted = {
-                viewModel.recipeId = recipeId
-                viewModel.getRecipe()
+                coroutineScope.launch {
+                    viewModel.recipeId = recipeId
+                    viewModel.getRecipe()
+                }
             }
         )
 

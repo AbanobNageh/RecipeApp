@@ -27,9 +27,9 @@ class RecipeScreenViewModel @Inject constructor(val getRecipe: GetRecipe): ViewM
     var recipe: Recipe? = null
     var error: Error? = null
 
-    fun getRecipe(): Deferred<Unit> {
+    suspend fun getRecipe(): Unit {
         if (screenState.value == RecipeScreenState.LOADING) {
-            return CompletableDeferred()
+            return
         }
 
         val asyncJob = viewModelScope.async(Dispatchers.IO) {
@@ -51,6 +51,6 @@ class RecipeScreenViewModel @Inject constructor(val getRecipe: GetRecipe): ViewM
             }
         }
 
-        return asyncJob
+        return asyncJob.await()
     }
 }

@@ -79,8 +79,8 @@ class RecipeListScreenViewModelTest {
 
             mockNetworkInfo.setIsConnected(true)
 
-            actualRecipeListScreenViewModel.getRecipesList().await()
-            mockRecipeListScreenViewModel.getRecipesList().await()
+            actualRecipeListScreenViewModel.getRecipesList()
+            mockRecipeListScreenViewModel.getRecipesList()
 
             Truth.assertThat(actualRecipeListScreenViewModel.recipes).isNotEmpty()
             Truth.assertThat(mockRecipeListScreenViewModel.recipes).isNotEmpty()
@@ -149,8 +149,8 @@ class RecipeListScreenViewModelTest {
     @Test
     fun `Calling resetSearch resets all search attributes`() {
         runBlocking {
-            actualRecipeListScreenViewModel.getRecipesList().await()
-            mockRecipeListScreenViewModel.getRecipesList().await()
+            actualRecipeListScreenViewModel.getRecipesList()
+            mockRecipeListScreenViewModel.getRecipesList()
 
             actualRecipeListScreenViewModel.isPaginationDone = true
             actualRecipeListScreenViewModel.paginationPageNumber = 2
