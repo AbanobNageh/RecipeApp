@@ -40,11 +40,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val isDarkTheme = activityViewModel.isDarkTheme.value
 
-            RecipeAppTheme(darkTheme = isDarkTheme) {
-                App(
-                    screenList = getScreenListFromDeepLink(data)
-                )
-            }
+            App(
+                screenList = getScreenListFromDeepLink(data),
+                isDarkTheme = isDarkTheme,
+            )
         }
     }
 
@@ -57,11 +56,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val isDarkTheme = activityViewModel.isDarkTheme.value
 
-            RecipeAppTheme(darkTheme = isDarkTheme) {
-                App(
-                    screenList = getScreenListFromDeepLink(data)
-                )
-            }
+            App(
+                screenList = getScreenListFromDeepLink(data),
+                isDarkTheme = isDarkTheme,
+            )
         }
     }
 
@@ -74,10 +72,13 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun App(
     screenList: List<Screen>,
+    isDarkTheme: Boolean = false,
 ) {
-    Navigator(
-        screenList
-    )
+    RecipeAppTheme(darkTheme = isDarkTheme) {
+        Navigator(
+            screenList
+        )
+    }
 }
 
 fun getScreenListFromDeepLink(deepLinkData: Uri?): List<Screen> {

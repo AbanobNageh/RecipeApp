@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.abanobnageh.recipeapp.core.error.Error
 import com.abanobnageh.recipeapp.core.usecase.Response
+import com.abanobnageh.recipeapp.core.usecase.Usecase
 import com.abanobnageh.recipeapp.data.models.domain.FoodCategory
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchResponse
@@ -26,7 +27,7 @@ enum class RecipeListScreenState {
 }
 
 @HiltViewModel
-class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRecipes) : ViewModel() {
+class RecipeListScreenViewModel @Inject constructor(val searchRecipes: Usecase<RecipeSearchResponse, SearchRecipesParams>) : ViewModel() {
     val searchText: MutableState<String> = mutableStateOf("")
     val selectedFoodCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val screenState: MutableState<RecipeListScreenState> = mutableStateOf(RecipeListScreenState.NORMAL)

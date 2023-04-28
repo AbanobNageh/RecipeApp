@@ -1,8 +1,10 @@
 package com.abanobnageh.recipeapp.feature_recipes.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -14,6 +16,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
@@ -21,7 +24,9 @@ import cafe.adriel.voyager.hilt.getViewModel
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.utils.getActivity
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
+import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
+import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenViewModel
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
@@ -44,6 +49,9 @@ class RecipeScreen(
         val localContext = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
+        val screenState = viewModel.screenState.value
+        val recipe = viewModel.recipe
+
         LifecycleEffect(
             onStarted = {
                 coroutineScope.launch {
@@ -54,18 +62,17 @@ class RecipeScreen(
         )
 
         RecipeScreenContent(
-            viewModel
+            screenState = screenState,
+            recipe = recipe,
         )
     }
 }
 
 @Composable
 fun RecipeScreenContent(
-    viewModel: RecipeScreenViewModel
+    screenState: RecipeScreenState,
+    recipe: Recipe?,
 ) {
-    val screenState = viewModel.screenState.value
-    val recipe = viewModel.recipe
-
     Scaffold() { padding ->
         when (screenState) {
             RecipeScreenState.LOADING -> {
@@ -111,6 +118,7 @@ fun RecipeScreenContent(
                                 imageOptions = ImageOptions(
                                     contentScale = ContentScale.Crop,
                                 ),
+                                previewPlaceholder = R.drawable.empty_plate,
                             )
                         }
                         Column(
@@ -176,5 +184,83 @@ fun RecipeScreenContent(
                 }
             }
         }
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun RecipeScreenContentPreview() {
+    val recipe = Recipe(
+        cookingInstructions = null,
+        dateAdded = "November 11 2020",
+        dateUpdated = "November 11 2020",
+        description = "N/A",
+        featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
+        ingredients = arrayListOf(
+            "12",
+            "cupcakes",
+            "devil's food",
+            "Chocolate Glaze",
+            "Edible gold glitter",
+            "4 tablespoons butter",
+            "1 recipe for Chocolate Glaze (below)",
+            "Approximately 1/2 cup chocolate chips",
+            "1 recipe for Marshmallow Filling (below)",
+            "6 ounces (1 cup) semi-sweet chocolate chips"
+        ),
+        longDateAdded = 1606348709,
+        longDateUpdated = 1606348709,
+        pk = 1,
+        publisher = "blake",
+        rating = 22,
+        sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
+        title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
+    )
+
+    RecipeAppTheme {
+        RecipeScreenContent(
+            screenState = RecipeScreenState.NORMAL,
+            recipe = recipe,
+        )
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun RecipeScreenContentLoadingPreview() {
+    RecipeAppTheme {
+        RecipeScreenContent(
+            screenState = RecipeScreenState.LOADING,
+            recipe = null,
+        )
+    }
+}
+
+@Preview(
+    group = "lightTheme",
+)
+@Preview(
+    group = "darkTheme",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+)
+@Composable
+fun RecipeScreenContentErrorPreview() {
+    RecipeAppTheme {
+        RecipeScreenContent(
+            screenState = RecipeScreenState.ERROR,
+            recipe = null,
+        )
     }
 }

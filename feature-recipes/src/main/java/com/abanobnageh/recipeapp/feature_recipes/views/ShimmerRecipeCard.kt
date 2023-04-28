@@ -64,6 +64,7 @@ fun ShimmerRecipeCard(
 @Composable
 fun ShimmerRecipeList(
     imageHeight: Dp,
+    listPadding: PaddingValues,
     padding: Dp = 16.dp,
 ) {
     BoxWithConstraints(
@@ -100,7 +101,10 @@ fun ShimmerRecipeList(
             )
         )
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .padding(listPadding),
+        ) {
             items(3) {
                 ShimmerRecipeCard(
                     xShimmer = xCardShimmer.value,
@@ -128,6 +132,7 @@ fun ShimmerRecipeListPreview() {
     RecipeAppTheme {
         ShimmerRecipeList(
             imageHeight = RECIPE_IMAGE_HEIGHT,
+            listPadding = PaddingValues()
         )
     }
 }
