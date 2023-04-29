@@ -5,9 +5,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: buildjet-8vcpu-ubuntu-2204
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 11
@@ -16,7 +14,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: gradle
-
       - name: Grant execute permission for gradlew
         run: chmod a+x ./gradlew
       - name: Run tests
