@@ -27,7 +27,7 @@ enum class RecipeListScreenState {
 }
 
 @HiltViewModel
-class RecipeListScreenViewModel @Inject constructor(val searchRecipes: Usecase<RecipeSearchResponse, SearchRecipesParams>) : ViewModel() {
+class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRecipes) : ViewModel() {
     val searchText: MutableState<String> = mutableStateOf("")
     val selectedFoodCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val screenState: MutableState<RecipeListScreenState> = mutableStateOf(RecipeListScreenState.NORMAL)
