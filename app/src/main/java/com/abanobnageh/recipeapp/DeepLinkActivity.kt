@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeepLinkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
