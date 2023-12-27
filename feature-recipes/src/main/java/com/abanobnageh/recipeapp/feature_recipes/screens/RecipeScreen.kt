@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -12,35 +11,31 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.androidx.AndroidScreen
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
-import com.abanobnageh.recipeapp.core.utils.getActivity
-import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
-import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenViewModel
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeView
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ImageOptions
-import com.skydoves.landscapist.components.imageComponent
 import com.skydoves.landscapist.glide.GlideImage
-import com.skydoves.landscapist.placeholder.placeholder.PlaceholderPlugin
 import kotlinx.coroutines.launch
 
 class RecipeScreen(
     val recipeId: Int,
-) : AndroidScreen() {
+) : Screen {
+
+    override val key: ScreenKey = "RecipeScreen"
 
     @Composable
     override fun Content() {

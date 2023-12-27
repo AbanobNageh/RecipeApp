@@ -28,18 +28,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
+    namespace 'com.abanobnageh.recipeapp.dependencies'
 }
 
 dependencies {
-    api 'androidx.core:core-ktx:1.10.0'
+    api 'androidx.core:core-ktx:1.12.0'
     api 'androidx.appcompat:appcompat:1.6.1'
-    api 'com.google.android.material:material:1.8.0'
+    api 'com.google.android.material:material:1.11.0'
 
     api platform('androidx.compose:compose-bom:2022.10.00')
     api "androidx.compose.ui:ui"
@@ -47,13 +48,13 @@ dependencies {
     api "androidx.compose.foundation:foundation"
     api "androidx.compose.material:material"
     api "androidx.compose.compiler:compiler:$compose_compiler_version"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    api 'androidx.activity:activity-compose:1.7.1'
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2"
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    api 'androidx.activity:activity-compose:1.8.2'
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // navigation
-    api("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    api("androidx.navigation:navigation-ui-ktx:2.5.3")
+    api("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    api("androidx.navigation:navigation-ui-ktx:2.7.6")
 
     //arch and view model
     api("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
@@ -74,11 +75,10 @@ dependencies {
 
     // Hilt
     api("com.google.dagger:hilt-android:$hilt_version")
-    api("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    api("androidx.hilt:hilt-navigation-fragment:1.1.0")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
-    api "cafe.adriel.voyager:voyager-androidx:$voyager_compose"
     api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"
     api "cafe.adriel.voyager:voyager-livedata:$voyager_compose"
     

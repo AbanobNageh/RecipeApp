@@ -2,13 +2,13 @@
 
 buildscript {
     ext {
-        compose_compiler_version = "1.4.7"
+        compose_compiler_version = "1.5.7"
         compose_bom_version = "2023.05.00"
-        lifecycle_version = "2.6.1"
+        lifecycle_version = "2.6.2"
         arch_version = "2.1.0"
-        kotlin_version = "1.8.21"
-        ext.hilt_version = "2.44"
-        voyager_compose = '1.0.0-rc06'
+        kotlin_version = "1.9.21"
+        ext.hilt_version = "2.50"
+        voyager_compose = '1.0.0'
         landscapist_version = "2.2.2"
         okhttp_bom_version = "4.11.0"
     }
@@ -17,7 +17,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
@@ -31,7 +31,7 @@ task clean(type: Delete) {
 }
 
 ext._minSdkVersion = 21
-ext._compileSdkVersion = 33
+ext._compileSdkVersion = 34
 ext._targetSdkVersion = 30 // don't update to 30 before removing `requestLegacyExternalStorage` and making sure to use SAF
 ext._versionCode = 1
 ext._versionName = "1.0.0"

@@ -41,6 +41,7 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
 
     var paginationPageNumber = 1
     var isPaginationDone = false
+    var isRefreshing = false
 
     suspend fun getRecipesList(): Unit {
         if (isPaginationDone ||
@@ -67,12 +68,14 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
             if (!recipeResponse.isResponse()) {
                 error = recipeResponse.error
                 screenState.value = RecipeListScreenState.ERROR
+                isRefreshing = false
             } else {
                 recipes.addAll(recipeResponse.response!!.results)
                 if (recipeResponse.response!!.next == null) {
                     isPaginationDone = true
                 }
                 screenState.value = RecipeListScreenState.NORMAL
+                isRefreshing = false
             }
         }
         this.scrollToCurrentItem()

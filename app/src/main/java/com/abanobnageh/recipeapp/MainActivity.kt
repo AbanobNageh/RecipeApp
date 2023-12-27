@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
@@ -20,6 +21,7 @@ import com.abanobnageh.recipeapp.feature_recipes.screens.RecipeScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
+@OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     val activityViewModel: MainActivityViewModel by viewModels()
@@ -81,6 +83,7 @@ fun App(
     }
 }
 
+@ExperimentalMaterialApi
 fun getScreenListFromDeepLink(deepLinkData: Uri?): List<Screen> {
     val pathSegments = deepLinkData?.pathSegments
 
