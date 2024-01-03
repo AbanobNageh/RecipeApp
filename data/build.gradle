@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion _compileSdkVersion
+    compileSdk _compileSdkVersion
 
     defaultConfig {
         minSdkVersion _minSdkVersion
