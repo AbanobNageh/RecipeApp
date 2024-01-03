@@ -1,7 +1,7 @@
 package com.abanobnageh.recipeapp.feature_recipes.screens
 
-import android.content.Intent
 import android.content.res.Configuration
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,10 +31,10 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.abanobnageh.recipeapp.core.constants.ACTION_THEME_TOGGLED
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.utils.getActivity
 import com.abanobnageh.recipeapp.core.utils.isScrolledToEnd
+import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.data.models.domain.FoodCategory
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
@@ -57,6 +57,7 @@ class RecipeListScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val localContext = LocalContext.current
         val activity = localContext.getActivity()
+        val activityViewModel: MainActivityViewModel by activity?.viewModels() ?: return
         val coroutineScope = rememberCoroutineScope()
 
         val searchText = viewModel.searchText.value
@@ -67,6 +68,7 @@ class RecipeListScreen : Screen {
 
         LifecycleEffect(
             onStarted = {
+                println("--- testingLog --- onStart, activityViewModel = ${activityViewModel}")
                 coroutineScope.launch {
                     viewModel.getRecipesList()
                 }
@@ -82,7 +84,7 @@ class RecipeListScreen : Screen {
             recipeListState = viewModel.recipeListState,
             foodCategoryListState = viewModel.foodCategoryListState,
             onToggleTheme = {
-                activity?.sendBroadcast(Intent(ACTION_THEME_TOGGLED))
+                activityViewModel.setIsDarkTheme(activity, !activityViewModel.isDarkTheme.value)
             },
             incrementPageNumber = { viewModel.incrementPageNumber() },
             getRecipesList = { viewModel.getRecipesList() },

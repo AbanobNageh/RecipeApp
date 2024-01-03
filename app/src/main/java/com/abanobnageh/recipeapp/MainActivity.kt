@@ -3,7 +3,6 @@ package com.abanobnageh.recipeapp
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -13,29 +12,20 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
-import com.abanobnageh.recipeapp.core.constants.ACTION_THEME_TOGGLED
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.feature_recipes.screens.RecipeListScreen
 import com.abanobnageh.recipeapp.feature_recipes.screens.RecipeScreen
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.Serializable
 
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     val activityViewModel: MainActivityViewModel by viewModels()
 
-    private val onToggleTheme = object: BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            activityViewModel.setIsDarkTheme(this@MainActivity, !activityViewModel.isDarkTheme.value)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.registerReceiver(onToggleTheme, IntentFilter(ACTION_THEME_TOGGLED))
         val data: Uri? = intent?.data
         activityViewModel.loadDarkTheme(this)
 
@@ -63,11 +53,6 @@ class MainActivity : AppCompatActivity() {
                 isDarkTheme = isDarkTheme,
             )
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        this.unregisterReceiver(onToggleTheme)
     }
 }
 
