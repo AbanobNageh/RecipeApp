@@ -68,7 +68,6 @@ class RecipeListScreen : Screen {
 
         LifecycleEffect(
             onStarted = {
-                println("--- testingLog --- onStart, activityViewModel = ${activityViewModel}")
                 coroutineScope.launch {
                     viewModel.getRecipesList()
                 }
@@ -84,7 +83,7 @@ class RecipeListScreen : Screen {
             recipeListState = viewModel.recipeListState,
             foodCategoryListState = viewModel.foodCategoryListState,
             onToggleTheme = {
-                activityViewModel.setIsDarkTheme(activity, !activityViewModel.isDarkTheme.value)
+                activityViewModel.toggleDarkTheme()
             },
             incrementPageNumber = { viewModel.incrementPageNumber() },
             getRecipesList = { viewModel.getRecipesList() },

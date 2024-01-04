@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val data: Uri? = intent?.data
-        activityViewModel.loadDarkTheme(this)
 
         setContent {
             val isDarkTheme = activityViewModel.isDarkTheme.value
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
 
         val data: Uri? = intent?.data
-        activityViewModel.loadDarkTheme(this)
 
         setContent {
             val isDarkTheme = activityViewModel.isDarkTheme.value

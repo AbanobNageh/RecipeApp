@@ -13,6 +13,7 @@ import com.abanobnageh.recipeapp.feature_recipes.utils.MockResponseFileReader
 import com.google.common.truth.Truth
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -36,7 +37,7 @@ class SearchRecipesTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         mockWebServer = MockWebServer()
         mockWebServer.start()
         val service: RecipeRetrofitService = RetrofitServiceBuilder.buildService(
@@ -62,7 +63,7 @@ class SearchRecipesTest {
 
     @Test
     fun `calling SearchRecipes usecase returns the correct information`() {
-        runBlocking {
+        runTest {
             val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipes_success.json").content, RecipeSearchResponseDto::class.java)
             val mockHTTPResponse = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
