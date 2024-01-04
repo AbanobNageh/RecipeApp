@@ -15,15 +15,15 @@ interface NetworkInfo {
 
 class NetworkInfoImpl: NetworkInfo {
     override suspend fun internetConnected(): Boolean {
-        try {
+        return try {
             val timeoutMs = 1500
             val socket = Socket()
             val socketAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
             socket.connect(socketAddress, timeoutMs)
             socket.close()
-            return true
+            true
         } catch (e: IOException) {
-            return false
+            false
         }
     }
 }

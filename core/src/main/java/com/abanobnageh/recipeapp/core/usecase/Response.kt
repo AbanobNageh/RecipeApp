@@ -5,10 +5,6 @@ class Response<Error, ResponseType>(
     var response: ResponseType? = null
 ) {
     fun isResponse(): Boolean {
-        if (this.response != null) {
-            return true
-        }
-
-        return false
+        return this.response != null
     }
 }

@@ -19,30 +19,28 @@ interface RecipeRepository {
 
 class RecipeRepositoryImpl @Inject constructor(val recipeRemoteDataSource: RecipeRemoteDataSource, val networkInfo: NetworkInfo): RecipeRepository {
     override suspend fun searchRecipes(query: String, pageNumber: Int): Response<Error, RecipeSearchResponse> {
-        if (networkInfo.internetConnected()) {
+        return if (networkInfo.internetConnected()) {
             try {
                 val recipeSearchResponse = recipeRemoteDataSource.searchRecipes(query, pageNumber)
-                return Response(null, recipeSearchResponse.mapToNetworkModel())
+                Response(null, recipeSearchResponse.mapToNetworkModel())
             } catch (exception: Exception) {
-                return Response(UnknownError(), null)
+                Response(UnknownError(), null)
             }
-        }
-        else {
-            return Response(NoInternetError(), null)
+        } else {
+            Response(NoInternetError(), null)
         }
     }
 
     override suspend fun getRecipe(recipeId: Int): Response<Error, Recipe> {
-        if (networkInfo.internetConnected()) {
+        return if (networkInfo.internetConnected()) {
             try {
                 val recipe = recipeRemoteDataSource.getRecipe(recipeId)
-                return Response(null, recipe.mapToDomainModel())
+                Response(null, recipe.mapToDomainModel())
             } catch (exception: Exception) {
-                return Response(UnknownError(), null)
+                Response(UnknownError(), null)
             }
-        }
-        else {
-            return Response(NoInternetError(), null)
+        } else {
+            Response(NoInternetError(), null)
         }
     }
 

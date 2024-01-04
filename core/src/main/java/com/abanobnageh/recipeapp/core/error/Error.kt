@@ -1,7 +1,7 @@
 package com.abanobnageh.recipeapp.core.error
 
-abstract class Error {}
+abstract class Error
 
-class NoInternetError : Error() {}
+class NoInternetError : Error()
 
-class UnknownError : Error() {}
+class UnknownError : Error()
