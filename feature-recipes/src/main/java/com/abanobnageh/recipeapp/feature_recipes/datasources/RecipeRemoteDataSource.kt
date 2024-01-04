@@ -19,20 +19,24 @@ interface RecipeRemoteDataSource {
 class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitService: RecipeRetrofitService):
     RecipeRemoteDataSource {
     override suspend fun searchRecipes(query: String, pageNumber: Int): RecipeSearchResponseDto {
-        var responseDto: RecipeSearchResponseDto? = null
+        val responseDto: RecipeSearchResponseDto?
 
         try {
             responseDto = withContext(Dispatchers.IO) { recipeRetrofitService.searchRecipe(page = pageNumber, query = query).execute().body() }
         } catch (throwable: Throwable) {
-            if (throwable is IOException) {
-                throw UnknownException()
-            }
-            else if (throwable is HttpException) {
-                val errorJson: String? = withContext(Dispatchers.IO) { throwable.response()?.errorBody()?.string() }
-                throw UnknownException()
-            }
-            else {
-                throw UnknownException()
+            when (throwable) {
+                is IOException -> {
+                    throw UnknownException()
+                }
+
+                is HttpException -> {
+                    // val errorJson: String? = withContext(Dispatchers.IO) { throwable.response()?.errorBody()?.string() }
+                    throw UnknownException()
+                }
+
+                else -> {
+                    throw UnknownException()
+                }
             }
         }
 
@@ -40,20 +44,24 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
     }
 
     override suspend fun getRecipe(recipeId: Int): RecipeDto {
-        var response: RecipeDto? = null
+        val response: RecipeDto?
 
         try {
             response = withContext(Dispatchers.IO) { recipeRetrofitService.getRecipe(id = recipeId).execute().body() }
         } catch (throwable: Throwable) {
-            if (throwable is IOException) {
-                throw UnknownException()
-            }
-            else if (throwable is HttpException) {
-                val errorJson: String? = withContext(Dispatchers.IO) { throwable.response()?.errorBody()?.string() }
-                throw UnknownException()
-            }
-            else {
-                throw UnknownException()
+            when (throwable) {
+                is IOException -> {
+                    throw UnknownException()
+                }
+
+                is HttpException -> {
+                    // val errorJson: String? = withContext(Dispatchers.IO) { throwable.response()?.errorBody()?.string() }
+                    throw UnknownException()
+                }
+
+                else -> {
+                    throw UnknownException()
+                }
             }
         }
 
