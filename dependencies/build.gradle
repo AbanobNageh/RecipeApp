@@ -80,6 +80,7 @@ dependencies {
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
     api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"
     api "cafe.adriel.voyager:voyager-livedata:$voyager_compose"
+    api "cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyager_compose"
     
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

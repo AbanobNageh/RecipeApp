@@ -12,13 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.hilt.getViewModel
+import com.abanobnageh.recipeapp.core.constants.RECIPE_SCREEN_KEY
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
@@ -34,14 +34,12 @@ import kotlinx.coroutines.launch
 class RecipeScreen(
     val recipeId: Int,
 ) : Screen {
-
-    override val key: ScreenKey = "RecipeScreen"
+    override val key: ScreenKey = RECIPE_SCREEN_KEY
 
     @Composable
     override fun Content() {
         val viewModel = getViewModel<RecipeScreenViewModel>()
 
-        val localContext = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
         val screenState = viewModel.screenState.value

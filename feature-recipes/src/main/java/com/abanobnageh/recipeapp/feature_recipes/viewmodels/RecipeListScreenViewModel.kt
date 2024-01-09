@@ -19,6 +19,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 enum class RecipeListScreenState {
+    UNINITIALIZED,
     LOADING,
     ERROR,
     NO_RECIPES,
@@ -30,7 +31,7 @@ enum class RecipeListScreenState {
 class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRecipes) : ViewModel() {
     val searchText: MutableState<String> = mutableStateOf("")
     val selectedFoodCategory: MutableState<FoodCategory?> = mutableStateOf(null)
-    val screenState: MutableState<RecipeListScreenState> = mutableStateOf(RecipeListScreenState.NORMAL)
+    val screenState: MutableState<RecipeListScreenState> = mutableStateOf(RecipeListScreenState.UNINITIALIZED)
 
     val recipes: ArrayList<Recipe> = arrayListOf()
     var error: Error? = null
