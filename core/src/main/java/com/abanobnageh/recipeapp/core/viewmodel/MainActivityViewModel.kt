@@ -2,6 +2,8 @@ package com.abanobnageh.recipeapp.core.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
@@ -23,7 +25,7 @@ class MainActivityViewModel @Inject constructor(private val application: Applica
         setIsDarkTheme(!isDarkTheme.value)
     }
 
-    fun setIsDarkTheme(isDarkTheme: Boolean) {
+    private fun setIsDarkTheme(isDarkTheme: Boolean) {
         val sharedPref = application.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE) ?: return
 
         with (sharedPref.edit()) {
@@ -34,7 +36,13 @@ class MainActivityViewModel @Inject constructor(private val application: Applica
     }
 
     private fun loadDarkTheme() {
+        val isSystemInDarkTheme = isSystemInDarkTheme()
         val sharedPref = application.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
-        isDarkTheme.value = sharedPref?.getBoolean(PREFERENCE_DARK_THEME_KEY, false) ?: false
+        isDarkTheme.value = sharedPref?.getBoolean(PREFERENCE_DARK_THEME_KEY, isSystemInDarkTheme) ?: isSystemInDarkTheme
+    }
+
+    private fun isSystemInDarkTheme(): Boolean {
+        return application.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
     }
 }
