@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
@@ -50,7 +51,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(RECIPE_IMAGE_HEIGHT),
-                    previewPlaceholder = R.drawable.empty_plate,
+                    previewPlaceholder = painterResource(id = R.drawable.empty_plate),
                 )
             }
             recipe.title?.let { title ->
