@@ -41,7 +41,7 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.6.1'
     api 'com.google.android.material:material:1.11.0'
 
-    api platform('androidx.compose:compose-bom:2024.01.00')
+    api platform('androidx.compose:compose-bom:2024.02.00')
     api "androidx.compose.ui:ui"
     api "androidx.compose.ui:ui-tooling"
     api "androidx.compose.foundation:foundation"
