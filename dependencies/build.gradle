@@ -70,7 +70,7 @@ dependencies {
 
     // Hilt
     api("com.google.dagger:hilt-android:$hilt_version")
-    api("androidx.hilt:hilt-navigation-fragment:1.1.0")
+    api("androidx.hilt:hilt-navigation-fragment:1.2.0")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
