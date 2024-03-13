@@ -6,7 +6,7 @@ buildscript {
         compose_bom_version = "2024.02.02"
         lifecycle_version = "2.7.0"
         arch_version = "2.1.0"
-        kotlin_version = "1.9.22"
+        kotlin_version = "1.9.23"
         ext.hilt_version = "2.50"
         voyager_compose = '1.0.0'
         landscapist_version = "2.3.2"
