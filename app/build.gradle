@@ -56,7 +56,8 @@ dependencies {
     implementation project(path: ':dependencies')
     implementation project(path: ':feature-recipes')
 
-    androidTestImplementation "junit:junit:4.*"
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 }
