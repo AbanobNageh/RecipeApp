@@ -59,7 +59,7 @@ dependencies {
     // retrofit + gson
     api 'com.google.code.gson:gson:2.10.1'
     api 'com.squareup.retrofit2:retrofit:2.10.0'
-    api 'com.squareup.retrofit2:converter-gson:2.10.0'
+    api 'com.squareup.retrofit2:converter-gson:2.11.0'
     api 'com.squareup.retrofit2:converter-scalars:2.10.0'
     api platform("com.squareup.okhttp3:okhttp-bom:$okhttp_bom_version")
     api 'com.squareup.okhttp3:logging-interceptor'
