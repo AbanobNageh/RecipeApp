@@ -78,8 +78,6 @@ dependencies {
     api "cafe.adriel.voyager:voyager-livedata:$voyager_compose"
     api "cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyager_compose"
 
-    api 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
