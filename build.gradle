@@ -8,7 +8,7 @@ buildscript {
         arch_version = "2.1.0"
         kotlin_version = "1.9.23"
         ext.hilt_version = "2.51.1"
-        voyager_compose = '1.1.0-alpha04'
+        voyager_compose = '1.1.0-beta01'
         landscapist_version = "2.3.3"
         okhttp_bom_version = "4.12.0"
     }
