@@ -2,7 +2,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
+    id("org.jetbrains.kotlin.plugin.compose") version "$kotlin_version"
 }
 
 android {
@@ -71,7 +72,7 @@ dependencies {
     // Hilt
     api("com.google.dagger:hilt-android:$hilt_version")
     api("androidx.hilt:hilt-navigation-fragment:1.2.0")
-    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    ksp("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
     api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"

@@ -6,7 +6,7 @@ buildscript {
         compose_bom_version = "2024.06.00"
         lifecycle_version = "2.8.1"
         arch_version = "2.1.0"
-        kotlin_version = "1.9.24"
+        kotlin_version = "2.0.0"
         ext.hilt_version = "2.51.1"
         voyager_compose = '1.1.0-beta02'
         landscapist_version = "2.3.4"
@@ -24,6 +24,17 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.plugin.compose' version "$kotlin_version"
+    id 'com.google.devtools.ksp' version '2.0.0-1.0.22' apply false
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 tasks.register('clean', Delete) {
