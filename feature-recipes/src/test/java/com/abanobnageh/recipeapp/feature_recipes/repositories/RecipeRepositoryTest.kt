@@ -3,7 +3,6 @@ package com.abanobnageh.recipeapp.feature_recipes.repositories
 import com.abanobnageh.recipeapp.core.error.Error
 import com.abanobnageh.recipeapp.core.error.NoInternetError
 import com.abanobnageh.recipeapp.core.network.NetworkInfo
-import com.abanobnageh.recipeapp.core.network.NetworkInfoImpl
 import com.abanobnageh.recipeapp.core.network.RecipeRetrofitService
 import com.abanobnageh.recipeapp.core.network.RetrofitServiceBuilder
 import com.abanobnageh.recipeapp.core.usecase.Response
@@ -16,7 +15,6 @@ import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSou
 import com.abanobnageh.recipeapp.feature_recipes.utils.MockResponseFileReader
 import com.google.common.truth.Truth
 import com.google.gson.Gson
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -175,7 +173,7 @@ class RecipeRepositoryTestImpl(
     val networkInfo: NetworkInfoTestImpl,
 ) : RecipeRepository {
     override suspend fun searchRecipes(query: String, pageNumber: Int): Response<Error, RecipeSearchResponse> {
-        return if (networkInfo.internetConnected()) {
+        return if (networkInfo.isInternetConnected()) {
             Response(null, recipeRemoteDataSourceTestImpl.searchRecipes(query, pageNumber).mapToNetworkModel())
         } else {
             Response(NoInternetError(), null)
@@ -183,7 +181,7 @@ class RecipeRepositoryTestImpl(
     }
 
     override suspend fun getRecipe(recipeId: Int): Response<Error, Recipe> {
-        return if (networkInfo.internetConnected()) {
+        return if (networkInfo.isInternetConnected()) {
             Response(null, recipeRemoteDataSourceTestImpl.getRecipe(recipeId).mapToDomainModel())
         } else {
             Response(NoInternetError(), null)
@@ -194,7 +192,7 @@ class RecipeRepositoryTestImpl(
 class NetworkInfoTestImpl: NetworkInfo {
     private var isConnected: Boolean = false
 
-    override suspend fun internetConnected(): Boolean {
+    override suspend fun isInternetConnected(): Boolean {
         return isConnected
     }
 

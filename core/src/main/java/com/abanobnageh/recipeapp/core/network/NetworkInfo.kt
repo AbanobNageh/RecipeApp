@@ -1,7 +1,5 @@
 package com.abanobnageh.recipeapp.core.network
 
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -10,12 +8,12 @@ import java.net.Socket
 import java.net.SocketAddress
 
 interface NetworkInfo {
-    suspend fun internetConnected(): Boolean
+    suspend fun isInternetConnected(): Boolean
 }
 
 class NetworkInfoImpl: NetworkInfo {
-    override suspend fun internetConnected(): Boolean {
-        return try {
+    override suspend fun isInternetConnected(): Boolean = withContext(Dispatchers.IO) {
+        return@withContext try {
             val timeoutMs = 1500
             val socket = Socket()
             val socketAddress: SocketAddress = InetSocketAddress("8.8.8.8", 53)
