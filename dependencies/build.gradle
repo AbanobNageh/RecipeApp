@@ -48,7 +48,7 @@ dependencies {
     api "androidx.compose.foundation:foundation"
     api "androidx.compose.material:material"
     api "androidx.compose.compiler:compiler:$compose_compiler_version"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.2'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.3'
     api 'androidx.activity:activity-compose:1.9.0'
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
 
@@ -70,9 +70,9 @@ dependencies {
     api "com.github.skydoves:landscapist-placeholder:$landscapist_version"
 
     // Hilt
-    api("com.google.dagger:hilt-android:$hilt_version")
+    api("com.google.dagger:hilt-android:2.51.1")
     api("androidx.hilt:hilt-navigation-fragment:1.2.0")
-    ksp("com.google.dagger:hilt-android-compiler:$hilt_version")
+    ksp("com.google.dagger:hilt-android-compiler:2.51.1")
 
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
     api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"
@@ -81,8 +81,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 }
