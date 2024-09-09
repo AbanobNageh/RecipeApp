@@ -4,7 +4,7 @@ buildscript {
     ext {
         compose_compiler_version = "1.5.15"
         compose_bom_version = "2024.08.00"
-        lifecycle_version = '2.8.4'
+        lifecycle_version = '2.8.5'
         arch_version = "2.1.0"
         kotlin_version = "2.0.20"
         ext.hilt_version = "2.52"
