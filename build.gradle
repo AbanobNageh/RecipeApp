@@ -42,7 +42,7 @@ tasks.register('clean', Delete) {
 }
 
 ext._minSdkVersion = 21
-ext._compileSdkVersion = 34
-ext._targetSdkVersion = 34
+ext._compileSdkVersion = 35
+ext._targetSdkVersion = 35
 ext._versionCode = 1
 ext._versionName = "1.0.0"
