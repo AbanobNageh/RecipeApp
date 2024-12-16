@@ -71,9 +71,9 @@ dependencies {
     api "com.github.skydoves:landscapist-placeholder:$landscapist_version"
 
     // Hilt
-    api("com.google.dagger:hilt-android:2.53")
+    api("com.google.dagger:hilt-android:2.53.1")
     api("androidx.hilt:hilt-navigation-fragment:1.2.0")
-    ksp("com.google.dagger:hilt-android-compiler:2.53")
+    ksp("com.google.dagger:hilt-android-compiler:2.53.1")
 
     api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
     api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"
