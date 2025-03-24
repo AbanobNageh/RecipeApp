@@ -51,7 +51,7 @@ android {
 dependencies {
     api("com.google.dagger:hilt-android:2.55")
     api("androidx.hilt:hilt-navigation-fragment:1.2.0")
-    ksp("com.google.dagger:hilt-android-compiler:2.55")
+    ksp("com.google.dagger:hilt-android-compiler:2.56")
     implementation project(path: ':core')
     implementation project(path: ':data')
     implementation project(path: ':dependencies')
