@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    api 'androidx.core:core-ktx:1.16.0'
+    api 'androidx.core:core-ktx:1.17.0'
     api 'androidx.appcompat:appcompat:1.7.1'
     api 'com.google.android.material:material:1.12.0'
 
