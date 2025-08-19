@@ -9,7 +9,7 @@ buildscript {
         kotlin_version = "2.2.10"
         hilt_version = "2.57"
         voyager_compose = '1.1.0-beta03'
-        landscapist_version = '2.5.1'
+        landscapist_version = '2.5.2'
         okhttp_bom_version = "5.1.0"
     }
     repositories {
