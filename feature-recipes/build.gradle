@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
@@ -7,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdk _compileSdkVersion
+    compileSdk = _compileSdkVersion
 
     defaultConfig {
         minSdkVersion _minSdkVersion
@@ -31,8 +33,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
     buildFeatures {
         compose true
@@ -45,7 +49,7 @@ android {
 
 dependencies {
     api("com.google.dagger:hilt-android:$hilt_version")
-    api("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    api("androidx.hilt:hilt-navigation-fragment:1.3.0")
     ksp("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation project(path: ':dependencies')
     implementation project(path: ':core')
@@ -53,13 +57,13 @@ dependencies {
 
     testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'com.google.truth:truth:1.4.4'
+    testImplementation 'com.google.truth:truth:1.4.5'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2"
-    testImplementation "org.mockito:mockito-core:5.19.0"
+    testImplementation "org.mockito:mockito-core:5.20.0"
 
     androidTestImplementation "junit:junit:4.13.2"
     androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
-    androidTestImplementation 'com.google.truth:truth:1.4.4'
+    androidTestImplementation 'com.google.truth:truth:1.4.5'
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 }

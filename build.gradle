@@ -9,7 +9,7 @@ buildscript {
         kotlin_version = "2.2.20"
         hilt_version = "2.57.2"
         voyager_compose = '1.1.0-beta03'
-        landscapist_version = '2.5.1'
+        landscapist_version = '2.6.1'
         okhttp_bom_version = "5.1.0"
     }
     repositories {
@@ -17,7 +17,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.0'
+        classpath 'com.android.tools.build:gradle:8.13.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
@@ -38,11 +38,11 @@ composeCompiler {
 }
 
 tasks.register('clean', Delete) {
-    delete rootProject.buildDir
+    delete rootProject.layout.buildDirectory
 }
 
-ext._minSdkVersion = 21
-ext._compileSdkVersion = 35
-ext._targetSdkVersion = 35
+ext._minSdkVersion = 23
+ext._compileSdkVersion = 36
+ext._targetSdkVersion = 36
 ext._versionCode = 1
 ext._versionName = "1.0.0"
