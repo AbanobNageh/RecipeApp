@@ -10,7 +10,7 @@ buildscript {
         hilt_version = "2.57.2"
         voyager_compose = '1.1.0-beta03'
         landscapist_version = '2.6.1'
-        okhttp_bom_version = "5.1.0"
+        okhttp_bom_version = "5.3.2"
     }
     repositories {
         google()
