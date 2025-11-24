@@ -53,7 +53,7 @@ dependencies {
     api "androidx.compose.material:material"
     api "androidx.compose.material:material-icons-core"
     api "androidx.compose.compiler:compiler:$compose_compiler_version"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.4'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
     api 'androidx.activity:activity-compose:1.12.0'
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
 
