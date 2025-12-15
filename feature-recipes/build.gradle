@@ -59,7 +59,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.google.truth:truth:1.4.5'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2"
-    testImplementation "org.mockito:mockito-core:5.20.0"
+    testImplementation "org.mockito:mockito-core:5.21.0"
 
     androidTestImplementation "junit:junit:4.13.2"
     androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
