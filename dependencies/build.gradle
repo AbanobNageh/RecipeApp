@@ -13,7 +13,6 @@ android {
 
     defaultConfig {
         minSdkVersion _minSdkVersion
-        targetSdkVersion _targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -39,6 +38,12 @@ android {
         }
     }
     namespace 'com.abanobnageh.recipeapp.dependencies'
+    lint {
+        targetSdk 36
+    }
+    testOptions {
+        targetSdk 36
+    }
 }
 
 dependencies {

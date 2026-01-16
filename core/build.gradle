@@ -11,7 +11,6 @@ android {
 
     defaultConfig {
         minSdkVersion _minSdkVersion
-        targetSdkVersion _targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -43,6 +42,12 @@ android {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
     namespace 'com.abanobnageh.recipeapp.core'
+    lint {
+        targetSdk 36
+    }
+    testOptions {
+        targetSdk 36
+    }
 }
 
 dependencies {
