@@ -1,9 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id("org.jetbrains.kotlin.plugin.compose") version "$kotlin_version"
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.dagger
+    alias libs.plugins.google.devtools.ksp
+    alias libs.plugins.jetbrains.kotlin.plugin.compose
 }
 
 android {
@@ -27,19 +29,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget = JvmTarget.JVM_17
         }
     }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
     }
     namespace 'com.abanobnageh.recipeapp.core'
     lint {
@@ -51,6 +50,9 @@ android {
 }
 
 dependencies {
+    api(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.hilt.compiler)
     implementation project(path: ':dependencies')
     implementation project(path: ':data')
 
