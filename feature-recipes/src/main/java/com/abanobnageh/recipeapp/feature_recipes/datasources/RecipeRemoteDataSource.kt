@@ -12,17 +12,17 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 interface RecipeRemoteDataSource {
-    suspend fun searchRecipes(query: String, pageNumber: Int): RecipeSearchResponseDto
-    suspend fun getRecipe(recipeId: Int): RecipeDto
+    suspend fun searchRecipes(query: String): RecipeSearchResponseDto
+    suspend fun getRecipe(recipeId: String): RecipeDto
 }
 
 class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitService: RecipeRetrofitService):
     RecipeRemoteDataSource {
-    override suspend fun searchRecipes(query: String, pageNumber: Int): RecipeSearchResponseDto {
+    override suspend fun searchRecipes(query: String): RecipeSearchResponseDto {
         val responseDto: RecipeSearchResponseDto?
 
         try {
-            responseDto = withContext(Dispatchers.IO) { recipeRetrofitService.searchRecipe(page = pageNumber, query = query).execute().body() }
+            responseDto = withContext(Dispatchers.IO) { recipeRetrofitService.searchRecipe(query = query).execute().body() }
         } catch (throwable: Throwable) {
             when (throwable) {
                 is IOException -> {
@@ -43,11 +43,12 @@ class RecipeRemoteDataSourceImpl @Inject constructor(private val recipeRetrofitS
         return responseDto!!
     }
 
-    override suspend fun getRecipe(recipeId: Int): RecipeDto {
+    override suspend fun getRecipe(recipeId: String): RecipeDto {
         val response: RecipeDto?
 
         try {
-            response = withContext(Dispatchers.IO) { recipeRetrofitService.getRecipe(id = recipeId).execute().body() }
+            val detailResponse = withContext(Dispatchers.IO) { recipeRetrofitService.getRecipe(id = recipeId).execute().body() }
+            response = detailResponse?.data?.recipe
         } catch (throwable: Throwable) {
             when (throwable) {
                 is IOException -> {

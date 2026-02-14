@@ -3,6 +3,8 @@ package com.abanobnageh.recipeapp.feature_recipes.viewmodels
 import com.abanobnageh.recipeapp.core.network.RecipeRetrofitService
 import com.abanobnageh.recipeapp.core.network.RetrofitServiceBuilder
 import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailResponseDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailDataDto
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceImpl
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceTestImpl
 import com.abanobnageh.recipeapp.feature_recipes.repositories.NetworkInfoTestImpl
@@ -70,7 +72,12 @@ class RecipeScreenViewModelTest {
     @Test
     fun `Calling getRecipe returns the correct recipe`() {
         runTest {
-            val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            val mockRecipeDto = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            // Wrap in RecipeDetailResponseDto as the API does
+            val mockResponseBody = RecipeDetailResponseDto(
+                status = "success",
+                data = RecipeDetailDataDto(recipe = mockRecipeDto)
+            )
             val mockHTTPResponse = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(Gson().toJson(mockResponseBody))
@@ -78,8 +85,8 @@ class RecipeScreenViewModelTest {
 
             mockNetworkInfo.setIsConnected(true)
 
-            actualRecipeScreenViewModel.recipeId = 1
-            mockRecipeScreenViewModel.recipeId = 1
+            actualRecipeScreenViewModel.recipeId = "1"
+            mockRecipeScreenViewModel.recipeId = "1"
 
             actualRecipeScreenViewModel.getRecipe()
             mockRecipeScreenViewModel.getRecipe()

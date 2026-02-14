@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext traffic for forkify-api.herokuapp.com to load images -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">forkify-api.herokuapp.com</domain>
+    </domain-config>
+
+    <!-- For all other domains, use default security settings -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
+

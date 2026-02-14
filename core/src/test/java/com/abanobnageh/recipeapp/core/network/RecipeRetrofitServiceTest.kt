@@ -1,6 +1,8 @@
 package com.abanobnageh.recipeapp.core.network
 
 import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailResponseDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailDataDto
 import com.abanobnageh.recipeapp.data.models.network.RecipeSearchResponseDto
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.Gson
@@ -49,7 +51,6 @@ class RecipeRetrofitServiceTest {
             mockWebServer.enqueue(mockResponse)
 
             val actualResponse = service.searchRecipe(
-                page = 1,
                 query = "",
             ).execute()
 
@@ -63,14 +64,14 @@ class RecipeRetrofitServiceTest {
     @Test
     fun `fetch recipe with id = 1 and check received data is equal to expected data`() {
         runTest {
-            val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDetailResponseDto::class.java)
             val mockResponse = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(Gson().toJson(mockResponseBody))
             mockWebServer.enqueue(mockResponse)
 
             val actualResponse = service.getRecipe(
-                id = 1,
+                id = "1",
             ).execute()
 
             val mockBodyString = Gson().toJson(mockResponseBody)

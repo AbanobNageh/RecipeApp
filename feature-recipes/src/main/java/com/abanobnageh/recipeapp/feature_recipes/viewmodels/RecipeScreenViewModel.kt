@@ -23,7 +23,7 @@ enum class RecipeScreenState {
 class RecipeScreenViewModel @Inject constructor(val getRecipe: GetRecipe): ViewModel() {
     val screenState: MutableState<RecipeScreenState> = mutableStateOf(RecipeScreenState.NORMAL)
 
-    var recipeId: Int? = null
+    var recipeId: String? = null
     var recipe: Recipe? = null
     var error: Error? = null
 

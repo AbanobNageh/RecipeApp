@@ -15,12 +15,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.hilt.getViewModel
-import com.abanobnageh.recipeapp.core.constants.RECIPE_SCREEN_KEY
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
+import com.abanobnageh.recipeapp.data.models.domain.Ingredient
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.feature_recipes.R
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeScreenState
@@ -32,34 +29,26 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
-class RecipeScreen(
-    val recipeId: Int,
-) : Screen {
-    override val key: ScreenKey = RECIPE_SCREEN_KEY
+@Composable
+fun RecipeScreen(
+    recipeId: String,
+) {
+    val viewModel = hiltViewModel<RecipeScreenViewModel>()
 
-    @Composable
-    override fun Content() {
-        val viewModel = getViewModel<RecipeScreenViewModel>()
+    val coroutineScope = rememberCoroutineScope()
 
-        val coroutineScope = rememberCoroutineScope()
+    val screenState = viewModel.screenState.value
+    val recipe = viewModel.recipe
 
-        val screenState = viewModel.screenState.value
-        val recipe = viewModel.recipe
-
-        LifecycleEffect(
-            onStarted = {
-                coroutineScope.launch {
-                    viewModel.recipeId = recipeId
-                    viewModel.getRecipe()
-                }
-            }
-        )
-
-        RecipeScreenContent(
-            screenState = screenState,
-            recipe = recipe,
-        )
+    LaunchedEffect(recipeId) {
+        viewModel.recipeId = recipeId
+        viewModel.getRecipe()
     }
+
+    RecipeScreenContent(
+        screenState = screenState,
+        recipe = recipe,
+    )
 }
 
 @Composable
@@ -98,9 +87,9 @@ fun RecipeScreenContent(
                         .padding(padding)
                 ) {
                     if (recipe != null) {
-                        recipe.featuredImage?.let { featuredImage ->
+                        recipe.imageUrl?.let { imageUrl ->
                             GlideImage(
-                                imageModel = { featuredImage },
+                                imageModel = { imageUrl },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(RECIPE_IMAGE_HEIGHT),
@@ -121,53 +110,58 @@ fun RecipeScreenContent(
                                 .padding(8.dp)
                         ) {
                             recipe.title?.let { title ->
-                                Row(
+                                Text(
+                                    text = title,
                                     modifier = Modifier
-                                        .fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                        .fillMaxWidth()
+                                        .padding(bottom = 8.dp),
+                                    style = MaterialTheme.typography.h3,
+                                )
 
-                                    ) {
-                                    Text(
-                                        text = title,
-                                        modifier = Modifier
-                                            .fillMaxWidth(0.85f)
-                                            .wrapContentWidth(Alignment.Start),
-                                        style = MaterialTheme.typography.h3,
-                                    )
-                                    recipe.rating?.let { rating ->
-                                        Text(
-                                            text = rating.toString(),
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .wrapContentWidth(Alignment.End)
-                                                .align(Alignment.CenterVertically),
-                                            style = MaterialTheme.typography.h5,
-                                        )
-                                    }
-                                }
                                 recipe.publisher?.let { publisher ->
-                                    val updateData = recipe.dateAdded
-                                    var updateText = "By $publisher"
-
-                                    if (updateData != null && publisher.isNotBlank()) {
-                                        updateText = "Updated $updateData by $publisher"
-                                    }
-
                                     Text(
-                                        text = updateText,
+                                        text = "By $publisher",
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(bottom = 8.dp),
                                         style = MaterialTheme.typography.caption,
                                     )
                                 }
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                                ) {
+                                    recipe.servings?.let { servings ->
+                                        Text(
+                                            text = "Servings: $servings",
+                                            style = MaterialTheme.typography.body2,
+                                        )
+                                    }
+                                    recipe.cookingTime?.let { cookingTime ->
+                                        Text(
+                                            text = "Cooking Time: $cookingTime min",
+                                            style = MaterialTheme.typography.body2,
+                                        )
+                                    }
+                                }
+
                                 recipe.ingredients?.let {
+                                    Text(
+                                        text = "Ingredients:",
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 8.dp, bottom = 8.dp),
+                                        style = MaterialTheme.typography.h5,
+                                    )
                                     for (ingredient in recipe.ingredients!!) {
                                         Text(
-                                            text = ingredient,
+                                            text = "• ${ingredient.toDisplayString()}",
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .padding(bottom = 8.dp),
+                                                .padding(bottom = 4.dp, start = 8.dp),
                                             style = MaterialTheme.typography.body1,
                                         )
                                     }
@@ -191,30 +185,20 @@ fun RecipeScreenContent(
 @Composable
 fun RecipeScreenContentPreview() {
     val recipe = Recipe(
-        cookingInstructions = null,
-        dateAdded = "November 11 2020",
-        dateUpdated = "November 11 2020",
-        description = "N/A",
-        featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
+        id = "664c8f193e7aa067e94e8297",
+        title = "Double Crust Stuffed Pizza",
+        publisher = "All Recipes",
+        imageUrl = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
+        sourceUrl = "http://allrecipes.com/Recipe/Double-Crust-Stuffed-Pizza/Detail.aspx",
+        servings = 4,
+        cookingTime = 120,
         ingredients = arrayListOf(
-            "12",
-            "cupcakes",
-            "devil's food",
-            "Chocolate Glaze",
-            "Edible gold glitter",
-            "4 tablespoons butter",
-            "1 recipe for Chocolate Glaze (below)",
-            "Approximately 1/2 cup chocolate chips",
-            "1 recipe for Marshmallow Filling (below)",
-            "6 ounces (1 cup) semi-sweet chocolate chips"
+            Ingredient(1.5, "tsps", "white sugar"),
+            Ingredient(1.0, "cup", "warm water"),
+            Ingredient(2.0, "cups", "all-purpose flour"),
+            Ingredient(1.0, "", "can crushed tomatoes"),
+            Ingredient(3.0, "cups", "shredded mozzarella cheese"),
         ),
-        longDateAdded = 1606348709,
-        longDateUpdated = 1606348709,
-        pk = 1,
-        publisher = "blake",
-        rating = 22,
-        sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
-        title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
     )
 
     RecipeAppTheme {

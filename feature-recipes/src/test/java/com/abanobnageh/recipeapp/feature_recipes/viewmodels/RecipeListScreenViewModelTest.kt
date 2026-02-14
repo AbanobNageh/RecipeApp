@@ -91,17 +91,6 @@ class RecipeListScreenViewModelTest {
         }
     }
 
-    @Test
-    fun `Calling incrementPageNumber increases the page number by one`() {
-        actualRecipeListScreenViewModel.paginationPageNumber = 1
-        mockRecipeListScreenViewModel.paginationPageNumber = 1
-
-        actualRecipeListScreenViewModel.incrementPageNumber()
-        mockRecipeListScreenViewModel.incrementPageNumber()
-
-        Truth.assertThat(actualRecipeListScreenViewModel.paginationPageNumber).isEqualTo(2)
-        Truth.assertThat(mockRecipeListScreenViewModel.paginationPageNumber).isEqualTo(2)
-    }
 
     @Test
     fun `Calling setSearchText nulls food category and sets search text when a non food category search text is passed`() {
@@ -153,19 +142,10 @@ class RecipeListScreenViewModelTest {
             actualRecipeListScreenViewModel.getRecipesList()
             mockRecipeListScreenViewModel.getRecipesList()
 
-            actualRecipeListScreenViewModel.isPaginationDone = true
-            actualRecipeListScreenViewModel.paginationPageNumber = 2
-            mockRecipeListScreenViewModel.isPaginationDone = true
-            mockRecipeListScreenViewModel.paginationPageNumber = 2
-
             actualRecipeListScreenViewModel.resetSearch()
             mockRecipeListScreenViewModel.resetSearch()
 
-            Truth.assertThat(actualRecipeListScreenViewModel.isPaginationDone).isEqualTo(false)
-            Truth.assertThat(actualRecipeListScreenViewModel.paginationPageNumber).isEqualTo(1)
             Truth.assertThat(actualRecipeListScreenViewModel.recipes).isEmpty()
-            Truth.assertThat(mockRecipeListScreenViewModel.isPaginationDone).isEqualTo(false)
-            Truth.assertThat(mockRecipeListScreenViewModel.paginationPageNumber).isEqualTo(1)
             Truth.assertThat(mockRecipeListScreenViewModel.recipes).isEmpty()
         }
     }

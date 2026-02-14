@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetrofitServiceBuilder {
-    private const val RECIPE_API_URL = "https://food2fork.ca/api/recipe/"
+    private const val RECIPE_API_URL = "https://forkify-api.jonas.io/api/v2/"
     private val gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .create()

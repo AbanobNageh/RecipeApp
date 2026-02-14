@@ -9,7 +9,7 @@ import com.abanobnageh.recipeapp.core.error.Error
 import com.abanobnageh.recipeapp.core.usecase.Response
 import com.abanobnageh.recipeapp.core.usecase.Usecase
 import com.abanobnageh.recipeapp.data.models.domain.FoodCategory
-import com.abanobnageh.recipeapp.data.models.domain.Recipe
+import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchItem
 import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchResponse
 import com.abanobnageh.recipeapp.feature_recipes.usecases.SearchRecipes
 import com.abanobnageh.recipeapp.feature_recipes.usecases.SearchRecipesParams
@@ -29,40 +29,33 @@ enum class RecipeListScreenState {
 
 @HiltViewModel
 class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRecipes) : ViewModel() {
-    val searchText: MutableState<String> = mutableStateOf("")
+    val searchText: MutableState<String> = mutableStateOf("pizza")
     val selectedFoodCategory: MutableState<FoodCategory?> = mutableStateOf(null)
     val screenState: MutableState<RecipeListScreenState> = mutableStateOf(RecipeListScreenState.UNINITIALIZED)
 
-    val recipes: ArrayList<Recipe> = arrayListOf()
+    val recipes: ArrayList<RecipeSearchItem> = arrayListOf()
     var error: Error? = null
 
     var selectedFoodCategoryIndex: Int? = null
     var foodCategoryListState: LazyListState = LazyListState(0, 0)
     var recipeListState: LazyListState = LazyListState(0, 0)
 
-    var paginationPageNumber = 1
-    var isPaginationDone = false
     var isRefreshing = false
 
     suspend fun getRecipesList(): Unit {
-        if (isPaginationDone ||
-            screenState.value == RecipeListScreenState.LOADING ||
-            screenState.value == RecipeListScreenState.NORMAL_PAGINATION_LOADING
-        ) {
+        if (screenState.value == RecipeListScreenState.LOADING) {
             return
         }
 
         val asyncJob = viewModelScope.async(Dispatchers.IO) {
-            if (recipes.isEmpty()) {
-                screenState.value = RecipeListScreenState.LOADING
-            } else {
-                screenState.value = RecipeListScreenState.NORMAL_PAGINATION_LOADING
-            }
+            screenState.value = RecipeListScreenState.LOADING
+
+            // Use a default search term if searchText is empty
+            val queryText = if (searchText.value.isBlank()) "pizza" else searchText.value
 
             val recipeResponse: Response<Error, RecipeSearchResponse> = searchRecipes.call(
                 SearchRecipesParams(
-                    query = searchText.value,
-                    pageNumber = paginationPageNumber,
+                    query = queryText,
                 )
             )
 
@@ -71,11 +64,13 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
                 screenState.value = RecipeListScreenState.ERROR
                 isRefreshing = false
             } else {
-                recipes.addAll(recipeResponse.response!!.results)
-                if (recipeResponse.response!!.next == null) {
-                    isPaginationDone = true
+                recipes.clear()
+                recipes.addAll(recipeResponse.response!!.recipes)
+                if (recipes.isEmpty()) {
+                    screenState.value = RecipeListScreenState.NO_RECIPES
+                } else {
+                    screenState.value = RecipeListScreenState.NORMAL
                 }
-                screenState.value = RecipeListScreenState.NORMAL
                 isRefreshing = false
             }
         }
@@ -83,11 +78,6 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
         return asyncJob.await()
     }
 
-    fun incrementPageNumber() {
-        if (!isPaginationDone) {
-            this.paginationPageNumber = this.paginationPageNumber + 1
-        }
-    }
 
     fun setSearchText(searchText: String) {
         if (FoodCategory.isFoodCategory(searchText)) {
@@ -116,8 +106,6 @@ class RecipeListScreenViewModel @Inject constructor(val searchRecipes: SearchRec
     }
 
     fun resetSearch() {
-        this.isPaginationDone = false
-        this.paginationPageNumber = 1
         this.recipeListState = LazyListState(0, 0)
         this.recipes.clear()
     }

@@ -1,25 +1,24 @@
 package com.abanobnageh.recipeapp.core.network
 
-import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailResponseDto
 import com.abanobnageh.recipeapp.data.models.network.RecipeSearchResponseDto
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
-const val RECIPE_API_TOKEN = "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
+const val RECIPE_API_KEY = "25aee0ec-ee61-4350-b79a-9ae97119c43b"
 
 interface RecipeRetrofitService {
-    @GET("search")
+    @GET("recipes")
     fun searchRecipe(
-        @Header("Authorization") token: String = RECIPE_API_TOKEN,
-        @Query("page") page: Int,
-        @Query("query") query: String,
+        @Query("search") query: String,
+        @Query("key") key: String = RECIPE_API_KEY,
     ): Call<RecipeSearchResponseDto>
 
-    @GET("get")
+    @GET("recipes/{id}")
     fun getRecipe(
-        @Header("Authorization") token: String = RECIPE_API_TOKEN,
-        @Query("id") id: Int,
-    ): Call<RecipeDto>
+        @Path("id") id: String,
+        @Query("key") key: String = RECIPE_API_KEY,
+    ): Call<RecipeDetailResponseDto>
 }

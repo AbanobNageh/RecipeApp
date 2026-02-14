@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -26,92 +25,67 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.hilt.getViewModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.abanobnageh.recipeapp.core.constants.RECIPE_LIST_SCREEN_KEY
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
 import com.abanobnageh.recipeapp.core.utils.getActivity
-import com.abanobnageh.recipeapp.core.utils.getResult
-import com.abanobnageh.recipeapp.core.utils.hideWithResult
-import com.abanobnageh.recipeapp.core.utils.isScrolledToEnd
 import com.abanobnageh.recipeapp.core.viewmodel.MainActivityViewModel
 import com.abanobnageh.recipeapp.data.models.domain.FoodCategory
-import com.abanobnageh.recipeapp.data.models.domain.Recipe
+import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchItem
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenState
 import com.abanobnageh.recipeapp.feature_recipes.viewmodels.RecipeListScreenViewModel
 import com.abanobnageh.recipeapp.feature_recipes.views.AppBar
 import com.abanobnageh.recipeapp.feature_recipes.views.RECIPE_IMAGE_HEIGHT
 import com.abanobnageh.recipeapp.feature_recipes.views.RecipeCard
 import com.abanobnageh.recipeapp.feature_recipes.views.ShimmerRecipeList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
-class RecipeListScreen : Screen {
+@Composable
+fun RecipeListScreen(
+    openRecipeScreen: (recipeId: String) -> Unit,
+) {
+    val viewModel = hiltViewModel<RecipeListScreenViewModel>()
 
-    override val key: ScreenKey = RECIPE_LIST_SCREEN_KEY
+    val localContext = LocalContext.current
+    val activity = localContext.getActivity()
+    val activityViewModel: MainActivityViewModel by activity?.viewModels() ?: return
+    val coroutineScope = rememberCoroutineScope()
 
-    @Composable
-    override fun Content() {
-        val viewModel = getViewModel<RecipeListScreenViewModel>()
+    val searchText = viewModel.searchText.value
+    val screenState = viewModel.screenState.value
+    val recipes = viewModel.recipes
+    val selectedFoodCategory = viewModel.selectedFoodCategory.value
+    val isRefreshing = viewModel.isRefreshing
 
-        val navigator = LocalNavigator.currentOrThrow
-        val localContext = LocalContext.current
-        val activity = localContext.getActivity()
-        val activityViewModel: MainActivityViewModel by activity?.viewModels() ?: return
-        val coroutineScope = rememberCoroutineScope()
-
-        val searchText = viewModel.searchText.value
-        val screenState = viewModel.screenState.value
-        val recipes = viewModel.recipes
-        val selectedFoodCategory = viewModel.selectedFoodCategory.value
-        val isRefreshing = viewModel.isRefreshing
-
-        LifecycleEffect(
-            onStarted = {
-                coroutineScope.launch {
-                    if (screenState === RecipeListScreenState.UNINITIALIZED) {
-                        viewModel.getRecipesList()
-                    }
-                }
-            }
-        )
-
-        RecipeListScreenContent(
-            searchText = searchText,
-            screenState = screenState,
-            recipes = recipes,
-            selectedFoodCategory = selectedFoodCategory,
-            isRefreshing = isRefreshing,
-            recipeListState = viewModel.recipeListState,
-            foodCategoryListState = viewModel.foodCategoryListState,
-            onToggleTheme = {
-                activityViewModel.toggleDarkTheme()
-            },
-            incrementPageNumber = { viewModel.incrementPageNumber() },
-            getRecipesList = { viewModel.getRecipesList() },
-            refreshRecipesList = {
-                viewModel.isRefreshing = true
-                viewModel.isPaginationDone = false
-                viewModel.recipes.clear()
-                viewModel.getRecipesList()
-            },
-            resetSearch = { viewModel.resetSearch() },
-            setSearchText = { viewModel.setSearchText(it) },
-            setSelectedFoodCategory = { viewModel.setSelectedFoodCategory(it) },
-            setSelectedFoodCategoryIndex = { viewModel.setSelectedFoodCategoryIndex(it) },
-            openRecipeScreen = { recipeId ->
-                navigator.push(RecipeScreen(recipeId = recipeId))
-            },
-        )
+    LaunchedEffect(Unit) {
+        if (screenState === RecipeListScreenState.UNINITIALIZED) {
+            viewModel.getRecipesList()
+        }
     }
+
+    RecipeListScreenContent(
+        searchText = searchText,
+        screenState = screenState,
+        recipes = recipes,
+        selectedFoodCategory = selectedFoodCategory,
+        isRefreshing = isRefreshing,
+        recipeListState = viewModel.recipeListState,
+        foodCategoryListState = viewModel.foodCategoryListState,
+        onToggleTheme = {
+            activityViewModel.toggleDarkTheme()
+        },
+        getRecipesList = { viewModel.getRecipesList() },
+        refreshRecipesList = {
+            viewModel.isRefreshing = true
+            viewModel.recipes.clear()
+            viewModel.getRecipesList()
+        },
+        resetSearch = { viewModel.resetSearch() },
+        setSearchText = { viewModel.setSearchText(it) },
+        setSelectedFoodCategory = { viewModel.setSelectedFoodCategory(it) },
+        setSelectedFoodCategoryIndex = { viewModel.setSelectedFoodCategoryIndex(it) },
+        openRecipeScreen = openRecipeScreen,
+    )
 }
 
 @ExperimentalMaterialApi
@@ -119,20 +93,19 @@ class RecipeListScreen : Screen {
 fun RecipeListScreenContent(
     searchText: String,
     screenState: RecipeListScreenState,
-    recipes: ArrayList<Recipe>,
+    recipes: ArrayList<RecipeSearchItem>,
     selectedFoodCategory: FoodCategory?,
     isRefreshing: Boolean,
     recipeListState: LazyListState,
     foodCategoryListState: LazyListState,
     onToggleTheme: () -> Unit,
-    incrementPageNumber: () -> Unit,
     getRecipesList: suspend () -> Unit,
     refreshRecipesList: suspend () -> Unit,
     resetSearch: () -> Unit,
     setSearchText: (searchText: String) -> Unit,
     setSelectedFoodCategory: (foodCategory: String) -> Unit,
     setSelectedFoodCategoryIndex: (selectedFoodCategoryIndex: Int) -> Unit,
-    openRecipeScreen: (recipeId: Int) -> Unit,
+    openRecipeScreen: (recipeId: String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pullToRefreshState = rememberPullRefreshState(refreshing = isRefreshing, onRefresh = {
@@ -140,15 +113,6 @@ fun RecipeListScreenContent(
             refreshRecipesList()
         }
     })
-
-    LaunchedEffect( recipeListState ) {
-        snapshotFlow { recipeListState.isScrolledToEnd() }.collect { isScrolledToEnd ->
-            if (isScrolledToEnd) {
-                incrementPageNumber()
-                getRecipesList()
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -176,6 +140,7 @@ fun RecipeListScreenContent(
         Box(
             modifier = Modifier
                 .pullRefresh(pullToRefreshState)
+                .padding(padding)
         ) {
             when (screenState) {
                 RecipeListScreenState.LOADING -> {
@@ -188,8 +153,7 @@ fun RecipeListScreenContent(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(MaterialTheme.colors.background)
-                            .padding(padding),
+                            .background(MaterialTheme.colors.background),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -202,8 +166,7 @@ fun RecipeListScreenContent(
                 RecipeListScreenState.NO_RECIPES -> {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(padding),
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -223,18 +186,11 @@ fun RecipeListScreenContent(
                                 RecipeCard(
                                     recipe = recipe,
                                     onClick = {
-                                        recipe.pk?.let {
+                                        recipe.id?.let {
                                             openRecipeScreen(it)
                                         }
                                     }
                                 )
-                                if (recipes.size - 1 == index &&
-                                    screenState == RecipeListScreenState.NORMAL_PAGINATION_LOADING
-                                ) {
-                                    LinearProgressIndicator(
-                                        modifier = Modifier.fillMaxWidth()
-                                    )
-                                }
                             }
                         }
                     }
@@ -261,31 +217,11 @@ fun RecipeListScreenContent(
 @ExperimentalMaterialApi
 @Composable
 fun RecipeListScreenContentPreview() {
-    val recipe = Recipe(
-        cookingInstructions = null,
-        dateAdded = "November 11 2020",
-        dateUpdated = "November 11 2020",
-        description = "N/A",
-        featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
-        ingredients = arrayListOf(
-            "12",
-            "cupcakes",
-            "devil's food",
-            "Chocolate Glaze",
-            "Edible gold glitter",
-            "4 tablespoons butter",
-            "1 recipe for Chocolate Glaze (below)",
-            "Approximately 1/2 cup chocolate chips",
-            "1 recipe for Marshmallow Filling (below)",
-            "6 ounces (1 cup) semi-sweet chocolate chips"
-        ),
-        longDateAdded = 1606348709,
-        longDateUpdated = 1606348709,
-        pk = 1,
+    val recipe = RecipeSearchItem(
+        id = "664c8f193e7aa067e94e8297",
+        title = "Cauldron Cakes - Home - Pastry Affair",
         publisher = "blake",
-        rating = 22,
-        sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
-        title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
+        imageUrl = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
     )
 
     RecipeAppTheme {
@@ -298,7 +234,6 @@ fun RecipeListScreenContentPreview() {
             recipeListState = LazyListState(),
             foodCategoryListState = LazyListState(),
             onToggleTheme = {},
-            incrementPageNumber = {},
             getRecipesList = {},
             refreshRecipesList = {},
             resetSearch = {},
@@ -330,7 +265,6 @@ fun RecipeListScreenContentLoadingPreview() {
             recipeListState = LazyListState(),
             foodCategoryListState = LazyListState(),
             onToggleTheme = {},
-            incrementPageNumber = {},
             getRecipesList = {},
             refreshRecipesList = {},
             resetSearch = {},
@@ -362,66 +296,6 @@ fun RecipeListScreenContentNoRecipesPreview() {
             recipeListState = LazyListState(),
             foodCategoryListState = LazyListState(),
             onToggleTheme = {},
-            incrementPageNumber = {},
-            getRecipesList = {},
-            refreshRecipesList = {},
-            resetSearch = {},
-            setSearchText = {},
-            setSelectedFoodCategory = {},
-            setSelectedFoodCategoryIndex = {},
-            openRecipeScreen = {},
-        )
-    }
-}
-
-@Preview(
-    group = "lightTheme",
-)
-@Preview(
-    group = "darkTheme",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@ExperimentalMaterialApi
-@Composable
-fun RecipeListScreenContentPaginationPreview() {
-    val recipe = Recipe(
-        cookingInstructions = null,
-        dateAdded = "November 11 2020",
-        dateUpdated = "November 11 2020",
-        description = "N/A",
-        featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
-        ingredients = arrayListOf(
-            "12",
-            "cupcakes",
-            "devil's food",
-            "Chocolate Glaze",
-            "Edible gold glitter",
-            "4 tablespoons butter",
-            "1 recipe for Chocolate Glaze (below)",
-            "Approximately 1/2 cup chocolate chips",
-            "1 recipe for Marshmallow Filling (below)",
-            "6 ounces (1 cup) semi-sweet chocolate chips"
-        ),
-        longDateAdded = 1606348709,
-        longDateUpdated = 1606348709,
-        pk = 1,
-        publisher = "blake",
-        rating = 22,
-        sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
-        title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
-    )
-
-    RecipeAppTheme {
-        RecipeListScreenContent(
-            searchText = "",
-            screenState = RecipeListScreenState.NORMAL_PAGINATION_LOADING,
-            recipes = arrayListOf(recipe, recipe),
-            selectedFoodCategory = null,
-            isRefreshing = false,
-            recipeListState = LazyListState(),
-            foodCategoryListState = LazyListState(),
-            onToggleTheme = {},
-            incrementPageNumber = {},
             getRecipesList = {},
             refreshRecipesList = {},
             resetSearch = {},
@@ -453,7 +327,6 @@ fun RecipeListScreenContentErrorPreview() {
             recipeListState = LazyListState(),
             foodCategoryListState = LazyListState(),
             onToggleTheme = {},
-            incrementPageNumber = {},
             getRecipesList = {},
             refreshRecipesList = {},
             resetSearch = {},

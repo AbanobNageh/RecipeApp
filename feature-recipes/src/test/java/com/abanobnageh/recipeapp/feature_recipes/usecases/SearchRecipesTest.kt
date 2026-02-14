@@ -75,13 +75,11 @@ class SearchRecipesTest {
             val actualResponse = actualSearchRecipesUsecase.call(
                 SearchRecipesParams(
                     query = "",
-                    pageNumber = 1,
                 )
             )
             val mockResponse = mockSearchRecipesUsecase.call(
                 SearchRecipesParams(
                     query = "",
-                    pageNumber = 1,
                 )
             )
 

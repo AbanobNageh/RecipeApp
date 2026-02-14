@@ -9,11 +9,10 @@ import javax.inject.Inject
 
 class SearchRecipes @Inject constructor(val recipeRepository: RecipeRepository): Usecase<RecipeSearchResponse, SearchRecipesParams> {
     override suspend fun call(params: SearchRecipesParams): Response<Error, RecipeSearchResponse> {
-        return recipeRepository.searchRecipes(params.query, params.pageNumber)
+        return recipeRepository.searchRecipes(params.query)
     }
 }
 
 class SearchRecipesParams(
     val query: String,
-    val pageNumber: Int,
 )

@@ -13,5 +13,5 @@ class GetRecipe(val recipeRepository: RecipeRepository): Usecase<Recipe, GetReci
 }
 
 class GetRecipeParams(
-    val recipeId: Int
+    val recipeId: String
 )

@@ -6,6 +6,7 @@ plugins {
     alias libs.plugins.dagger
     alias libs.plugins.google.devtools.ksp
     alias libs.plugins.jetbrains.kotlin.plugin.compose
+    alias libs.plugins.kotlin.serialization
 }
 
 android {

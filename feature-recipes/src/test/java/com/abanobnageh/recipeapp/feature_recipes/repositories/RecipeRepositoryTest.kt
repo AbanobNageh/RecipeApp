@@ -9,6 +9,8 @@ import com.abanobnageh.recipeapp.core.usecase.Response
 import com.abanobnageh.recipeapp.data.models.domain.Recipe
 import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchResponse
 import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailResponseDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailDataDto
 import com.abanobnageh.recipeapp.data.models.network.RecipeSearchResponseDto
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceImpl
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceTestImpl
@@ -69,11 +71,9 @@ class RecipeRepositoryTest {
             mockNetworkInfo.setIsConnected(true)
 
             val actualResponse = actualRepository.searchRecipes(
-                pageNumber = 1,
                 query = "",
             )
             val mockResponse = mockRepository.searchRecipes(
-                pageNumber = 1,
                 query = "",
             )
 
@@ -88,7 +88,12 @@ class RecipeRepositoryTest {
     @Test
     fun `calling getRecipe on the repository returns the correct information`() {
         runTest {
-            val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            val mockRecipeDto = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            // Wrap in RecipeDetailResponseDto as the API does
+            val mockResponseBody = RecipeDetailResponseDto(
+                status = "success",
+                data = RecipeDetailDataDto(recipe = mockRecipeDto)
+            )
             val mockHTTPResponse = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(Gson().toJson(mockResponseBody))
@@ -97,10 +102,10 @@ class RecipeRepositoryTest {
             mockNetworkInfo.setIsConnected(true)
 
             val actualResponse = actualRepository.getRecipe(
-                recipeId = 1,
+                recipeId = "1",
             )
             val mockResponse = mockRepository.getRecipe(
-                recipeId = 1,
+                recipeId = "1",
             )
 
             Truth.assertThat(mockResponse.response).isNotNull()
@@ -123,11 +128,9 @@ class RecipeRepositoryTest {
             mockNetworkInfo.setIsConnected(false)
 
             val actualResponse = actualRepository.searchRecipes(
-                pageNumber = 1,
                 query = "",
             )
             val mockResponse = mockRepository.searchRecipes(
-                pageNumber = 1,
                 query = "",
             )
 
@@ -152,10 +155,10 @@ class RecipeRepositoryTest {
             mockNetworkInfo.setIsConnected(false)
 
             val actualResponse = actualRepository.getRecipe(
-                recipeId = 1,
+                recipeId = "1",
             )
             val mockResponse = mockRepository.getRecipe(
-                recipeId = 1,
+                recipeId = "1",
             )
 
             Truth.assertThat(mockResponse.error).isNotNull()
@@ -172,15 +175,15 @@ class RecipeRepositoryTestImpl(
     val recipeRemoteDataSourceTestImpl: RecipeRemoteDataSourceTestImpl,
     val networkInfo: NetworkInfoTestImpl,
 ) : RecipeRepository {
-    override suspend fun searchRecipes(query: String, pageNumber: Int): Response<Error, RecipeSearchResponse> {
+    override suspend fun searchRecipes(query: String): Response<Error, RecipeSearchResponse> {
         return if (networkInfo.isInternetConnected()) {
-            Response(null, recipeRemoteDataSourceTestImpl.searchRecipes(query, pageNumber).mapToNetworkModel())
+            Response(null, recipeRemoteDataSourceTestImpl.searchRecipes(query).mapToDomainModel())
         } else {
             Response(NoInternetError(), null)
         }
     }
 
-    override suspend fun getRecipe(recipeId: Int): Response<Error, Recipe> {
+    override suspend fun getRecipe(recipeId: String): Response<Error, Recipe> {
         return if (networkInfo.isInternetConnected()) {
             Response(null, recipeRemoteDataSourceTestImpl.getRecipe(recipeId).mapToDomainModel())
         } else {

@@ -17,14 +17,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abanobnageh.recipeapp.core.theme.RecipeAppTheme
-import com.abanobnageh.recipeapp.data.models.domain.Recipe
+import com.abanobnageh.recipeapp.data.models.domain.RecipeSearchItem
 import com.abanobnageh.recipeapp.feature_recipes.R
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
+fun RecipeCard(recipe: RecipeSearchItem, onClick: () -> Unit = {}) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -37,9 +37,9 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            recipe.featuredImage?.let { featuredImage ->
+            recipe.imageUrl?.let { imageUrl ->
                 GlideImage(
-                    imageModel = { featuredImage },
+                    imageModel = { imageUrl },
                     requestOptions = {
                         RequestOptions()
                             .error(R.drawable.empty_plate)
@@ -69,18 +69,9 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
                         text = title,
                         modifier = Modifier
                             .testTag("recipe_card_title_tag")
-                            .fillMaxWidth(.85F)
+                            .fillMaxWidth()
                             .wrapContentWidth(Alignment.Start),
                         style = MaterialTheme.typography.h5
-                    )
-                    Text(
-                        text = recipe.rating.toString(),
-                        modifier = Modifier
-                            .testTag("recipe_card_rating_tag")
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.End)
-                            .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.h6
                     )
                 }
             }
@@ -99,31 +90,11 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
 fun PreviewRecipeCard() {
     RecipeAppTheme {
         RecipeCard(
-            Recipe(
-                cookingInstructions = null,
-                dateAdded = "November 11 2020",
-                dateUpdated = "November 11 2020",
-                description = "N/A",
-                featuredImage = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
-                ingredients = arrayListOf(
-                    "12",
-                    "cupcakes",
-                    "devil's food",
-                    "Chocolate Glaze",
-                    "Edible gold glitter",
-                    "4 tablespoons butter",
-                    "1 recipe for Chocolate Glaze (below)",
-                    "Approximately 1/2 cup chocolate chips",
-                    "1 recipe for Marshmallow Filling (below)",
-                    "6 ounces (1 cup) semi-sweet chocolate chips"
-                ),
-                longDateAdded = 1606348709,
-                longDateUpdated = 1606348709,
-                pk = 1,
+            RecipeSearchItem(
+                id = "664c8f193e7aa067e94e8297",
+                imageUrl = "https://nyc3.digitaloceanspaces.com/food2fork/food2fork-static/featured_images/1/featured_image.png",
                 publisher = "blake",
-                rating = 22,
-                sourceUrl = "http://www.thepastryaffair.com/blog/2011/7/12/cauldron-cakes.html",
-                title = "Cauldron&nbsp;Cakes - Home - Pastry Affair",
+                title = "Cauldron Cakes - Home - Pastry Affair",
             )
         )
     }

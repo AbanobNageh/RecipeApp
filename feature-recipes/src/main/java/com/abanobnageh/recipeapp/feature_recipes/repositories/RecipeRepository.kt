@@ -11,16 +11,16 @@ import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSou
 import javax.inject.Inject
 
 interface RecipeRepository {
-    suspend fun searchRecipes(query: String, pageNumber: Int): Response<Error, RecipeSearchResponse>
-    suspend fun getRecipe(recipeId: Int): Response<Error, Recipe>
+    suspend fun searchRecipes(query: String): Response<Error, RecipeSearchResponse>
+    suspend fun getRecipe(recipeId: String): Response<Error, Recipe>
 }
 
 class RecipeRepositoryImpl @Inject constructor(val recipeRemoteDataSource: RecipeRemoteDataSource, val networkInfo: NetworkInfo): RecipeRepository {
-    override suspend fun searchRecipes(query: String, pageNumber: Int): Response<Error, RecipeSearchResponse> {
+    override suspend fun searchRecipes(query: String): Response<Error, RecipeSearchResponse> {
         return if (networkInfo.isInternetConnected()) {
             try {
-                val recipeSearchResponse = recipeRemoteDataSource.searchRecipes(query, pageNumber)
-                Response(null, recipeSearchResponse.mapToNetworkModel())
+                val recipeSearchResponse = recipeRemoteDataSource.searchRecipes(query)
+                Response(null, recipeSearchResponse.mapToDomainModel())
             } catch (exception: Exception) {
                 Response(UnknownError(), null)
             }
@@ -29,7 +29,7 @@ class RecipeRepositoryImpl @Inject constructor(val recipeRemoteDataSource: Recip
         }
     }
 
-    override suspend fun getRecipe(recipeId: Int): Response<Error, Recipe> {
+    override suspend fun getRecipe(recipeId: String): Response<Error, Recipe> {
         return if (networkInfo.isInternetConnected()) {
             try {
                 val recipe = recipeRemoteDataSource.getRecipe(recipeId)

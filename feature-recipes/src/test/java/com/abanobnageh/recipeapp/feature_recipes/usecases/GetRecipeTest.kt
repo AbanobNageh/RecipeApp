@@ -3,6 +3,8 @@ package com.abanobnageh.recipeapp.feature_recipes.usecases
 import com.abanobnageh.recipeapp.core.network.RecipeRetrofitService
 import com.abanobnageh.recipeapp.core.network.RetrofitServiceBuilder
 import com.abanobnageh.recipeapp.data.models.network.RecipeDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailResponseDto
+import com.abanobnageh.recipeapp.data.models.network.RecipeDetailDataDto
 import com.abanobnageh.recipeapp.data.models.network.RecipeSearchResponseDto
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceImpl
 import com.abanobnageh.recipeapp.feature_recipes.datasources.RecipeRemoteDataSourceTestImpl
@@ -64,7 +66,12 @@ class GetRecipeTest {
     @Test
     fun `calling GetRecipe usecase returns the correct information`() {
         runTest {
-            val mockResponseBody = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            val mockRecipeDto = Gson().fromJson(MockResponseFileReader("get_recipe_success.json").content, RecipeDto::class.java)
+            // Wrap in RecipeDetailResponseDto as the API does
+            val mockResponseBody = RecipeDetailResponseDto(
+                status = "success",
+                data = RecipeDetailDataDto(recipe = mockRecipeDto)
+            )
             val mockHTTPResponse = MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
                 .setBody(Gson().toJson(mockResponseBody))
@@ -74,12 +81,12 @@ class GetRecipeTest {
 
             val actualResponse = actualGetRecipeUsecase.call(
                 GetRecipeParams(
-                    recipeId = 1,
+                    recipeId = "1",
                 )
             )
             val mockResponse = mockGetRecipeUsecase.call(
                 GetRecipeParams(
-                    recipeId = 1,
+                    recipeId = "1",
                 )
             )
 

@@ -30,6 +30,5 @@ ext.compose_bom_version = "2026.02.00"
 ext.lifecycle_version = '2.10.0'
 ext.kotlin_version = "2.3.10"
 ext.hilt_version = "2.59.1"
-ext.voyager_compose = '1.1.0-beta03'
 ext.landscapist_version = '2.9.5'
 ext.okhttp_bom_version = "5.3.2"

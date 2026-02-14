@@ -6,6 +6,7 @@ plugins {
     alias libs.plugins.dagger
     alias libs.plugins.google.devtools.ksp
     alias libs.plugins.jetbrains.kotlin.plugin.compose
+    alias libs.plugins.kotlin.serialization
 }
 
 android {
@@ -60,6 +61,7 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.2'
     api 'androidx.activity:activity-compose:1.12.4'
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 
     //arch and view model
     api("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
@@ -82,10 +84,8 @@ dependencies {
     api(libs.hilt.nav.fragment)
     ksp(libs.hilt.android.compiler)
 
-    api "cafe.adriel.voyager:voyager-navigator:$voyager_compose"
-    api "cafe.adriel.voyager:voyager-hilt:$voyager_compose"
-    api "cafe.adriel.voyager:voyager-livedata:$voyager_compose"
-    api "cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyager_compose"
+    api libs.androidx.navigation.compose
+    api libs.androidx.hilt.navigation.compose
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation platform(libs.androidx.compose.bom)
