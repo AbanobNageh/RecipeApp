@@ -58,7 +58,7 @@ dependencies {
     api "androidx.compose.foundation:foundation"
     api "androidx.compose.material:material"
     api "androidx.compose.material:material-icons-core"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.2'
+    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'
     api 'androidx.activity:activity-compose:1.12.4'
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
     api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
