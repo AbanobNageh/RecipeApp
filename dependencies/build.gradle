@@ -48,36 +48,36 @@ android {
 }
 
 dependencies {
-    api 'androidx.core:core-ktx:1.16.0'
-    api 'androidx.appcompat:appcompat:1.7.1'
-    api 'com.google.android.material:material:1.13.0'
+    api libs.androidx.core.ktx
+    api libs.androidx.appcompat
+    api libs.material
 
     api platform(libs.androidx.compose.bom)
-    api "androidx.compose.ui:ui"
-    api "androidx.compose.ui:ui-tooling"
-    api "androidx.compose.foundation:foundation"
-    api "androidx.compose.material:material"
-    api "androidx.compose.material:material-icons-core"
-    api 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.2'
-    api 'androidx.activity:activity-compose:1.12.4'
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
-    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
+    api libs.androidx.compose.ui
+    api libs.androidx.compose.foundation
+    api libs.androidx.compose.material
+    api libs.androidx.compose.material.icons.core
+    api libs.androidx.lifecycle.runtime.ktx
+    api libs.androidx.activity.compose
+    api libs.kotlinx.coroutines.android
+    api libs.kotlinx.serialization.json
 
     //arch and view model
-    api("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    api("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-    api("androidx.lifecycle:lifecycle-common-java8:$lifecycle_version")
+    api(libs.androidx.lifecycle.viewmodel.ktx)
+    api(libs.androidx.lifecycle.livedata.ktx)
+    api(libs.androidx.lifecycle.common.java8)
 
     // retrofit + gson
-    api 'com.google.code.gson:gson:2.11.0'
-    api 'com.squareup.retrofit2:retrofit:2.11.0'
-    api 'com.squareup.retrofit2:converter-gson:2.11.0'
-    api 'com.squareup.retrofit2:converter-scalars:2.11.0'
-    api platform("com.squareup.okhttp3:okhttp-bom:$okhttp_bom_version")
-    api 'com.squareup.okhttp3:logging-interceptor'
+    api libs.gson
+    api libs.retrofit
+    api libs.converter.gson
+    api libs.converter.scalars
+    api platform(libs.okhttp.bom)
+    api libs.okhttp
+    api libs.logging.interceptor
 
-    api "com.github.skydoves:landscapist-glide:$landscapist_version"
-    api "com.github.skydoves:landscapist-placeholder:$landscapist_version"
+    api libs.landscapist.glide
+    api libs.landscapist.placeholder
 
     // Hilt
     api(libs.hilt.android)
@@ -87,10 +87,10 @@ dependencies {
     api libs.androidx.navigation.compose
     api libs.androidx.hilt.navigation.compose
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit
     androidTestImplementation platform(libs.androidx.compose.bom)
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
-    debugImplementation "androidx.compose.ui:ui-test-manifest"
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.tooling
 }
