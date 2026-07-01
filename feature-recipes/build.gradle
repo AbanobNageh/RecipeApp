@@ -69,5 +69,6 @@ dependencies {
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
     androidTestImplementation libs.truth
+    debugImplementation platform(libs.androidx.compose.bom)
     debugImplementation libs.androidx.compose.ui.tooling
 }
