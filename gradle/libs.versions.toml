@@ -2,7 +2,7 @@
 activityCompose = "1.13.0"
 agp = "9.3.1"
 appcompat = "1.7.1"
-composeBom = "2026.06.01"
+composeBom = "2026.08.00"
 coreKtx = "1.19.0"
 dagger = "2.60.1"
 daggerVersion = "2.60.1"
