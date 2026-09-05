@@ -20,8 +20,7 @@ kotlinGradlePlugin = "2.4.10"
 compileSdk = "37"
 kotlinxCoroutinesAndroid = "1.11.0"
 kotlinxSerializationJson = "1.11.0"
-landscapistGlide = "2.9.8"
-landscapistPlaceholder = "2.9.6"
+landscapistGlide = "2.11.0"
 lifecycleRuntimeKtx = "2.11.0"
 material = "1.14.0"
 materialIconsCore = "1.7.8"
@@ -67,7 +66,6 @@ androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navig
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapistPlaceholder" }
 landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapistGlide" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpBom" }
 material = { module = "com.google.android.material:material", version.ref = "material" }

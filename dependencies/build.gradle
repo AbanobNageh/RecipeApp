@@ -77,7 +77,6 @@ dependencies {
     api libs.logging.interceptor
 
     api libs.landscapist.glide
-    api libs.landscapist.placeholder
 
     // Hilt
     api(libs.hilt.android)
