@@ -122,12 +122,32 @@ added `ACCESS_NETWORK_STATE`. The `NetworkInfo` interface is unchanged, so no te
 Note the semantic shift: `NoInternetError` now means "no network interface", not "no usable
 internet", so a captive portal now surfaces `UnknownError` instead.
 
+### Test suite state (updated 2026-09-06)
+
+All tests green: **24 unit tests** and **12 Compose instrumentation tests**, zero failures.
+
+The 12 instrumentation tests previously failed with
+`NoSuchMethodException: android.hardware.input.InputManager.getInstance`. The diagnosis of
+"Espresso 3.7.0 vs Android 16, unfixable" was WRONG — it read the version from the catalog rather
+than from the failing module's resolved classpath. `:feature-recipes` never declared its own test
+dependencies, so it silently inherited **espresso-core 3.5.0** from Compose ui-test's POM, while
+`:core` and `:dependencies` pin 3.7.0. Declaring espresso-core explicitly fixed that, and exposed a
+second missing dependency: `createComposeRule()` launches `androidx.activity.ComponentActivity`,
+which only reaches the debug manifest via `ui-test-manifest`. `:app` had it; `:feature-recipes` did
+not. Two build-file lines; both tracked in commit 80219f6.
+
+This matters beyond the test count: Compose moved 1.11.2 -> 1.12.0 in this update, and until that
+fix the entire Compose UI layer had no automated verification at all.
+
+`NetworkInfoImpl` also gained five unit tests (commit 678e88a), each verified by mutation to fail
+when the branch it covers is broken.
+
+NOTE: CI still does not run `connectedAndroidTest` — `.github/workflows/android.yml` runs only
+`testDebugUnitTest` and `assembleDebug`. The 12 instrumentation tests pass locally but are still
+not gating anything.
+
 ### Known issues NOT addressed by this update (all pre-existing)
 
-- All 12 Compose instrumentation tests fail with
-  `NoSuchMethodException: android.hardware.input.InputManager.getInstance` (Espresso 3.7.0 vs
-  Android 16). Proven pre-existing: identical 12/12 failure on master. CI never runs
-  `connectedAndroidTest`, which is why it went unnoticed.
 - Gradle-10 deprecations from Groovy space-assignment syntax (`compose true`, `namespace '...'`) in
   all five module build scripts. Becomes a hard error on Gradle 10.
 - Eight deprecated `android.*=false` flags in gradle.properties plus legacy variant API usage; all
