@@ -4,9 +4,11 @@ import com.abanobnageh.recipeapp.core.network.NetworkInfo
 import com.abanobnageh.recipeapp.core.network.NetworkInfoImpl
 import com.abanobnageh.recipeapp.core.network.RecipeRetrofitService
 import com.abanobnageh.recipeapp.core.network.RetrofitServiceBuilder
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -22,7 +24,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNetworkInfo(): NetworkInfo {
-        return NetworkInfoImpl()
+    fun provideNetworkInfo(@ApplicationContext context: Context): NetworkInfo {
+        return NetworkInfoImpl(context)
     }
 }
