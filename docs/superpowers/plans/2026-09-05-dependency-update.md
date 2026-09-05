@@ -1101,7 +1101,9 @@ git commit -m "ci: update checkout/setup-java actions and add github-actions to 
 
 Warm caches can hide resolution problems. Force a genuinely cold build.
 
-**This project's `clean` task does not clean the modules.** Root `build.gradle` defines it as `delete rootProject.layout.buildDirectory`, which removes only `./build` — the five module `build/` directories survive, along with their Kotlin incremental-compilation state. Every earlier task's gate was therefore an incremental build, which is fine for catching dependency breakage (a changed version changes the `@Classpath` input and forces re-execution) but is not a from-scratch verification. This step is the one place that must be truly cold, so delete the module build directories explicitly:
+A note on `clean`, because it is easy to get wrong: root `build.gradle` registers its own `clean` task as `delete rootProject.layout.buildDirectory`, which removes only `./build`. That looks like the module `build/` directories would survive — **they do not**. AGP applies Gradle's Base Plugin to every module, which registers a per-module `clean` ("Deletes the build directory"), and `./gradlew clean` matches that task name in all projects. Verified directly: after `./gradlew clean`, all five module `build/` directories are gone. So every task gate in this plan was a real clean build of module outputs.
+
+What `clean` does *not* touch is `~/.gradle` — the dependency, transform and configuration caches. That is what makes a gate run in ~20s while a first-ever build takes minutes, and it is why this step adds `--refresh-dependencies`. The `rm -rf` below is belt-and-braces, not a workaround:
 
 ```bash
 ./gradlew clean --console=plain
@@ -1109,7 +1111,7 @@ rm -rf app/build core/build data/build dependencies/build feature-recipes/build
 ./gradlew testDebugUnitTest assembleDebug --refresh-dependencies --console=plain 2>&1 | tail -20
 ```
 
-Expected: `BUILD SUCCESSFUL`. This run takes roughly 3 minutes rather than the ~20 seconds the incremental gate takes — if it finishes in seconds, the `rm -rf` did not take effect and the check is worthless. Do **not** "fix" the root `clean` task; that is a pre-existing repo defect and out of scope for this plan.
+Expected: `BUILD SUCCESSFUL`, taking roughly 2–3 minutes with most tasks executed rather than up-to-date — `--refresh-dependencies` re-resolves every dependency, which is the slow part. If it finishes in seconds with everything up-to-date, the cold-ness did not take effect and the check is worthless.
 
 - [ ] **Step 2: Confirm the final unit test count is still 19/0/0**
 
