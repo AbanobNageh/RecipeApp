@@ -37,6 +37,9 @@ junit 4.13.2, mockito-core 5.23.0, truth 1.4.5, foojay-resolver 1.0.0.
   hilt-navigation-compose 1.4.0, landscapist 2.11.0. API 37 is stable; android-37.0 is
   installed locally. AGP 9.2 already supports max API level 37.0, so the compileSdk bump
   does not by itself require an AGP upgrade.
+  NOTE: navigation 2.10.0 appears in that list because compileSdk 37 is one of its
+  requirements, but it was NOT adopted — it is additionally blocked by a minSdk 24 floor
+  this project does not meet. See the navigation row above and the Final state section.
 - AGP 9.4.0 requires Gradle >= 9.6.0. AGP 9.3.x requires Gradle >= 9.5.0.
 - Compose compiler plugin version must equal the Kotlin version.
 - Hilt 2.60 breaking changes: multidex support removed; minSdk floor 23 (project is 23);
