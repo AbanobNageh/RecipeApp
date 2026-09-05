@@ -1,10 +1,10 @@
 package com.abanobnageh.recipeapp.di
 
+import android.content.Context
 import com.abanobnageh.recipeapp.core.network.NetworkInfo
 import com.abanobnageh.recipeapp.core.network.NetworkInfoImpl
 import com.abanobnageh.recipeapp.core.network.RecipeRetrofitService
 import com.abanobnageh.recipeapp.core.network.RetrofitServiceBuilder
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
