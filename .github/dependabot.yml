@@ -10,3 +10,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  # Updates for the GitHub Actions used in CI
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: "weekly"
