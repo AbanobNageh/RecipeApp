@@ -820,7 +820,7 @@ git commit -m "build: update Gradle to 9.7.1 and AGP to 9.4.0"
 
 **Fallback ladder** — always change the wrapper and AGP as a matched pair:
 1. Gradle `9.7.1` + AGP `9.4.0` — target
-2. Gradle `9.6.1` + AGP `9.4.0` — 9.6.1 is AGP 9.4's stated minimum and is already in the local Gradle cache, so this isolates "AGP 9.4 is fine, Gradle 9.7 is not"
+2. Gradle `9.6.1` + AGP `9.4.0` — AGP 9.4's stated Gradle minimum is **9.6.0**; 9.6.1 is the nearest patch above it and is already present in the local Gradle wrapper cache, so this rung isolates "AGP 9.4 is fine, Gradle 9.7 is not" without a fresh download
 3. Gradle `9.5.0` (unchanged) + AGP `9.3.2` — AGP 9.3.x requires exactly Gradle 9.5.0, so this needs no wrapper change at all
 4. Gradle `9.5.0` + AGP `9.2.1` — a patch bump only
 5. Gradle `9.5.0` + AGP `9.2.0` — stay put
@@ -1099,14 +1099,17 @@ git commit -m "ci: update checkout/setup-java actions and add github-actions to 
 
 - [ ] **Step 1: Full clean build from an empty state**
 
-Warm caches can hide resolution problems. Force a cold resolve:
+Warm caches can hide resolution problems. Force a genuinely cold build.
+
+**This project's `clean` task does not clean the modules.** Root `build.gradle` defines it as `delete rootProject.layout.buildDirectory`, which removes only `./build` — the five module `build/` directories survive, along with their Kotlin incremental-compilation state. Every earlier task's gate was therefore an incremental build, which is fine for catching dependency breakage (a changed version changes the `@Classpath` input and forces re-execution) but is not a from-scratch verification. This step is the one place that must be truly cold, so delete the module build directories explicitly:
 
 ```bash
 ./gradlew clean --console=plain
+rm -rf app/build core/build data/build dependencies/build feature-recipes/build
 ./gradlew testDebugUnitTest assembleDebug --refresh-dependencies --console=plain 2>&1 | tail -20
 ```
 
-Expected: `BUILD SUCCESSFUL`.
+Expected: `BUILD SUCCESSFUL`. This run takes roughly 3 minutes rather than the ~20 seconds the incremental gate takes — if it finishes in seconds, the `rm -rf` did not take effect and the check is worthless. Do **not** "fix" the root `clean` task; that is a pre-existing repo defect and out of scope for this plan.
 
 - [ ] **Step 2: Confirm the final unit test count is still 19/0/0**
 
