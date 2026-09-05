@@ -502,7 +502,7 @@ git commit -m "build: update core-ktx 1.19.0, navigation-compose 2.10.0, android
 The catalog currently pins `composeUi`, `foundation` and `materialVersion` explicitly *and* imports a BOM, and the pins are already being overridden at resolution time (`compose.ui` declared 1.10.6, resolves 1.11.2). This task makes the BOM the single source of truth so the catalog stops misreporting what ships.
 
 **Files:**
-- Modify: `gradle/libs.versions.toml` (`composeBom`; remove `composeUi`, `foundation`, `materialVersion`; rewrite five `[libraries]` entries to drop their `version.ref`)
+- Modify: `gradle/libs.versions.toml` (`composeBom`; remove `composeUi`, `foundation`, `materialVersion`; rewrite six `[libraries]` entries to drop their `version.ref`)
 
 **Interfaces:**
 - Consumes: Task 1's `compileSdk 37` (Compose 1.12.0 declares `minCompileSdk=37`).
@@ -535,7 +535,7 @@ materialVersion = "1.10.6"
 
 Leave `materialIconsCore = "1.7.8"` alone — `material-icons-core` is frozen at 1.7.8 and the BOM pins it there too, but it is clearer to keep the explicit ref. Also leave `material = "1.14.0"` alone — that is `com.google.android.material:material`, a different library entirely, and it is already current.
 
-- [ ] **Step 3: Drop `version.ref` from the five Compose library entries**
+- [ ] **Step 3: Drop `version.ref` from the six Compose library entries**
 
 In `[libraries]`, the BOM supplies these versions. These six entries are **not contiguous** — they sit at lines 43, 44, 46, 47, 66 and 67, separated by unrelated entries. Edit each one individually; do not replace a block.
 
