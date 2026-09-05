@@ -68,6 +68,13 @@ dependencies {
     androidTestImplementation libs.junit
     androidTestImplementation platform(libs.androidx.compose.bom)
     androidTestImplementation libs.androidx.compose.ui.test.junit4
+    // Compose ui-test pulls espresso-core 3.5.0 transitively, which reflects on
+    // InputManager.getInstance — removed in recent Android. Declare it explicitly so this
+    // module gets the same 3.7.0 as :core and :dependencies.
+    androidTestImplementation libs.androidx.espresso.core
     androidTestImplementation libs.truth
     debugImplementation libs.androidx.compose.ui.tooling
+    // createComposeRule() launches androidx.activity.ComponentActivity, which only exists in
+    // the debug manifest if ui-test-manifest is present.
+    debugImplementation libs.androidx.compose.ui.test.manifest
 }
