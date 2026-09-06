@@ -1,14 +1,14 @@
 [versions]
 activityCompose = "1.13.0"
-agp = "9.3.1"
-appcompat = "1.7.1"
-composeBom = "2026.06.01"
+agp = "9.4.0"
+appcompat = "1.8.0"
+composeBom = "2026.08.00"
 coreKtx = "1.19.0"
 dagger = "2.60.1"
 daggerVersion = "2.60.1"
 espressoCore = "3.7.0"
-googleDevtoolsKsp = "2.3.10"
-gradle = "9.3.1"
+googleDevtoolsKsp = "2.3.11"
+gradle = "9.4.0"
 gradleToolchainsFoojayResolverConvention = "1.0.0"
 gson = "2.14.0"
 hiltNavigationFragment = "1.4.0"
@@ -21,14 +21,14 @@ compileSdk = "37"
 kotlinxCoroutinesAndroid = "1.11.0"
 kotlinxSerializationJson = "1.11.0"
 landscapistGlide = "2.11.0"
-landscapistPlaceholder = "2.11.0"
 lifecycleRuntimeKtx = "2.11.0"
 material = "1.14.0"
+materialIconsCore = "1.7.8"
 mockitoCore = "5.23.0"
 navigationCompose = "2.9.8"
 hiltNavigationCompose = "1.4.0"
-okhttpBom = "5.4.0"
-okhttp = "5.4.0"
+okhttpBom = "5.5.0"
+okhttp = "5.5.0"
 retrofit = "3.0.0"
 truth = "1.4.5"
 
@@ -38,7 +38,7 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
-androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -66,7 +66,6 @@ androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navig
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-landscapist-placeholder = { module = "com.github.skydoves:landscapist-placeholder", version.ref = "landscapistPlaceholder" }
 landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapistGlide" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpBom" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
