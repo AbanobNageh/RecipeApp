@@ -73,6 +73,7 @@ dependencies {
     // module gets the same 3.7.0 as :core and :dependencies.
     androidTestImplementation libs.androidx.espresso.core
     androidTestImplementation libs.truth
+    debugImplementation platform(libs.androidx.compose.bom)
     debugImplementation libs.androidx.compose.ui.tooling
     // createComposeRule() launches androidx.activity.ComponentActivity, which only exists in
     // the debug manifest if ui-test-manifest is present.
